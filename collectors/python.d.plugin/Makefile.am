@@ -37,6 +37,7 @@ dist_pythonconfig_DATA = \
     $(top_srcdir)/installer/.keep \
     $(NULL)
 
+include adaptec_raid/Makefile.inc
 include apache/Makefile.inc
 include beanstalk/Makefile.inc
 include bind_rndc/Makefile.inc
@@ -82,6 +83,7 @@ include portcheck/Makefile.inc
 include postfix/Makefile.inc
 include postgres/Makefile.inc
 include powerdns/Makefile.inc
+include proxysql/Makefile.inc
 include puppet/Makefile.inc
 include rabbitmq/Makefile.inc
 include redis/Makefile.inc
@@ -94,6 +96,7 @@ include spigotmc/Makefile.inc
 include springboot/Makefile.inc
 include squid/Makefile.inc
 include tomcat/Makefile.inc
+include tor/Makefile.inc
 include traefik/Makefile.inc
 include unbound/Makefile.inc
 include uwsgi/Makefile.inc

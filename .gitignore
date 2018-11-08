@@ -30,6 +30,7 @@ ltmain.sh
 missing
 stamp-h1
 netdata.spec
+sha256sums.txt
 
 # netdata binaries
 netdata
@@ -101,6 +102,7 @@ netdata-updater.sh
 
 # cmake files
 cmake-build-debug/
+cmake-build-release/
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
@@ -130,6 +132,7 @@ tests/profile/benchmark-registry
 tests/profile/test-eval
 tests/profile/benchmark-line-parsing
 tests/profile/benchmark-procfile-parser
+tests/profile/benchmark-value-pairs
 tests/profile/statsd-stress
 oprofile_data/
 vgcore.*

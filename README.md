@@ -46,9 +46,9 @@ netdata currently runs on **Linux**, **FreeBSD**, and **MacOS**.
 
 ## User base
 *Docker pulls*<br/>
-[![Docker titpetric/netdata Pulls](https://img.shields.io/docker/pulls/titpetric/netdata.svg?label=docker%20pulls%20titpetric/netdata)](https://hub.docker.com/r/titpetric/netdata/)
-[![Docker firehol/netdata Pulls](https://img.shields.io/docker/pulls/firehol/netdata.svg?label=docker%20pulls%20firehol/netdata)](https://hub.docker.com/r/firehol/netdata/)
-[![Docker netdata/netdata Pulls](https://img.shields.io/docker/pulls/netdata/netdata.svg?label=docker%20pulls%20netdata/netdata)](https://hub.docker.com/r/netdata/netdata/)
+[![netdata/netdata (official)](https://img.shields.io/docker/pulls/netdata/netdata.svg?label=netdata/netdata+%28official%29)](https://hub.docker.com/r/netdata/netdata/)
+[![firehol/netdata (deprecated)](https://img.shields.io/docker/pulls/firehol/netdata.svg?label=firehol/netdata+%28deprecated%29)](https://hub.docker.com/r/firehol/netdata/)
+[![titpetric/netdata (donated)](https://img.shields.io/docker/pulls/titpetric/netdata.svg?label=titpetric/netdata+%28third+party%29)](https://hub.docker.com/r/titpetric/netdata/)
 
 *Since May 16th 2016 (the date the [global public netdata registry](https://github.com/netdata/netdata/wiki/mynetdata-menu-item) was released):*<br/>
 [![User Base](https://registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_entries&dimensions=persons&label=user%20base&units=null&value_color=blue&precision=0&v42)](https://registry.my-netdata.io/#menu_netdata_submenu_registry)
@@ -63,6 +63,22 @@ netdata currently runs on **Linux**, **FreeBSD**, and **MacOS**.
 ---
 
 ## News
+
+`Nov 6th, 2018` - **[netdata v1.11.0 released!](https://github.com/netdata/netdata/releases)**
+
+ - New query engine, supporting statistical functions.
+ - Fixed security issues identified by Red4Sec.com and Synacktiv.
+ - New Data Collection Modules: `rethinkdbs`, `proxysql`, `litespeed`, `uwsgi`, `unbound`, `powerdns`, `dockerd`, `puppet`, `logind`, `adaptec_raid`, `megacli`, `spigotmc`, `boinc`, `w1sensor`, `monit`, `linux_power_supplies`.
+ - Improved Data Collection Modules: `statsd.plugin`, `apps.plugin`, `freeipmi.plugin`, `proc.plugin`, `diskspace.plugin`, `freebsd.plugin`, `python.d.plugin`, `web_log`, `nginx_plus`, `ipfs`, `fail2ban`, `ceph`, `elasticsearch`, `nginx_plus`,  `redis`, 
+ `beanstalk`, `mysql`, `varnish`, `couchdb`, `phpfpm`, `apache`, `icecast`, `mongodb`, `postgress`, `elasticsearch`, `mdstat`, `openvpn_log`, `snmp`, `nut`.
+
+ - Added alarms for detecting abnormally high load average, `TCP` `SYN` and `TCP` accept queue overflows, network interfaces congestion and alarms for `bcache`, `mdstat`, `apcupsd`, `mysql`.
+ - system alarms are now enabled on FreeBSD.
+ - New notification methods: **rocket.chat**, **Microsoft Teams**, **syslog**, **fleep.io**, **Amazon SNS**.
+
+ - and dozens more improvements, enhancements, features and compatibility fixes
+
+---
 
 `Sep 18, 2018` - **netdata has its own organization**
 
@@ -79,50 +95,6 @@ Netdata now has its own github organization `netdata`, so all github URLs are no
 Netdata is now at the [Cloud Native Computing Foundation (CNCF) landscape](https://landscape.cncf.io/grouping=no&sort=stars).
 
 Read the [netdata presentation](https://docs.google.com/presentation/d/18C8bCTbtgKDWqPa57GXIjB2PbjjpjsUNkLtZEz6YK8s/edit?usp=sharing) we gave at CNCF TOC on Sep 18, 2018.
-
----
-
-`Mar 27th, 2018` - **[netdata v1.10.0 released!](https://github.com/netdata/netdata/releases)**
-
- - new web server, a lot faster and more secure
- - updated all javascript libraries to their latest versions (fixed compatibility issues - now netdata chart can now be embedded on **Atlassian Confluence** pages and remain fully interactive!)
- - new plugins:
-   - **BTRFS** (visualize BTRFS allocation with alarms)
-   - **bcache** (monitor hybrid setups HDD + SSD)
-   - **ceph**
-   - **nginx plus**
-   - **libreswan** (monitor the traffic of IPSEC tunnels)
-   - **traefik**
-   - **icecast**
-   - **ntpd**
-   - **httpcheck** (monitor any remote web server)
-   - **portcheck** (monitor any remote TCP port)
-   - **spring-boot** (monitor java spring-boot apps)
-   - **dnsdist**
-   - **Linux hugepages**
- - improved plugins:
-   - **statsd**
-   - **web_log**
-   - **cgroups** for containers and VMs monitoring (netdata now supports **systemd-nspawn** and **kubernetes** - fixed security issue with `cgroup-network`)
-   - **Linux memory**
-   - **diskspace**
-   - **network interfaces**
-   - **postgres**
-   - **rabbitmq**
-   - **apps.plugin** (now it also tracks swap usage per process)
-   - **haproxy**
-   - **uptime**
-   - **ksm** (kernel memory debupper)
-   - **mdstat** (software raid)
-   - **elasticsearch**
-   - **apcupsd**
-   - **dhcpd**
-   - **fronius**
-   - **stiebeletron**
- - new alarm notification methods
-   - **alerta**
-   - **IRC** (post on IRC channels)
- - and dozens more improvements, enhancements, features and compatibility fixes
 
 ---
 
@@ -379,7 +351,7 @@ And you can extend it, by writing plugins that collect data from any source, usi
 This is a high level overview of netdata feature set and architecture.
 Click it to to interact with it (it has direct links to documentation).
 
-[![netdata-overview](https://user-images.githubusercontent.com/2662304/37909754-6c812a7c-3114-11e8-8673-0d1926a9793a.png)](https://my-netdata.io/infographic.html)
+[![image](https://user-images.githubusercontent.com/2662304/47672043-a47eb480-dbb9-11e8-92a4-fa422d053309.png)](https://my-netdata.io/infographic.html)
 
 ---
 

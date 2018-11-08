@@ -19,10 +19,13 @@ packaging/ @paulfantom
 # streaming/
 # system/ 
 # tests/
-# web/ 
+# web/
 
+# Ownership of specific files
+CHANGELOG.md @netdatabot
 .travis.yml @paulfantom
 .lgtm.yml @paulfantom
 
 # Ownership by filetype (overwrites ownership by directory)
 *.am @paulfantom @ktsaou
+*.c *.h @ktsaou @vlvkobal

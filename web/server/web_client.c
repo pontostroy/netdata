@@ -560,31 +560,6 @@ void buffer_data_options2string(BUFFER *wb, uint32_t options) {
     }
 }
 
-const char *group_method2string(int group) {
-    switch(group) {
-        case GROUP_UNDEFINED:
-            return "";
-
-        case GROUP_AVERAGE:
-            return "average";
-
-        case GROUP_MIN:
-            return "min";
-
-        case GROUP_MAX:
-            return "max";
-
-        case GROUP_SUM:
-            return "sum";
-
-        case GROUP_INCREMENTAL_SUM:
-            return "incremental-sum";
-
-        default:
-            return "unknown-group-method";
-    }
-}
-
 static inline int check_host_and_call(RRDHOST *host, struct web_client *w, char *url, int (*func)(RRDHOST *, struct web_client *, char *)) {
     if(unlikely(host->rrd_memory_mode == RRD_MEMORY_MODE_NONE)) {
         buffer_flush(w->response.data);
@@ -1618,6 +1593,8 @@ ssize_t web_client_read_file(struct web_client *w)
     ssize_t bytes = read(w->ifd, &w->response.data->buffer[w->response.data->len], (size_t)left);
     if(likely(bytes > 0)) {
         size_t old = w->response.data->len;
+        (void)old;
+
         w->response.data->len += bytes;
         w->response.data->buffer[w->response.data->len] = '\0';
 
@@ -1671,6 +1648,8 @@ ssize_t web_client_receive(struct web_client *w)
         w->stats_received_bytes += bytes;
 
         size_t old = w->response.data->len;
+        (void)old;
+
         w->response.data->len += bytes;
         w->response.data->buffer[w->response.data->len] = '\0';
 
