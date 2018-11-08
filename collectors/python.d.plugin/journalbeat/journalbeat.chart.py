@@ -24,7 +24,7 @@ CHARTS = {
             ['total_p', 'Total out', 'incremental', 1, -1],
             ['failed_o', 'Failed', 'incremental', 1,1],
             ['published_p','Published', 'incremental',1,-1],
-            ['active_p','Active', 'incremental',1,-1],
+            ['active_0','Active', 'incremental',1,-1],
         ]
         },
 
