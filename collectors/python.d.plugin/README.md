@@ -9,6 +9,20 @@
 5. Allows each **module** to have one or more data collection **jobs**
 6. Each **job** is collecting one or more metrics from a single data source
 
+## Pull Request Checklist for Python Plugins
+
+This is a generic checklist for submitting a new Python plugin for Netdata.  It is by no means comprehensive.
+
+At minimum, to be buildable and testable, the PR needs to include:
+
+* The module itself, following proper naming conventions: `python.d/<module_dir>/<module_name>.chart.py`
+* A README.md file for the plugin under `python.d/<module_dir>`. 
+* The configuration file for the module: `conf.d/python.d/<module_name>.conf`. Python config files are in YAML format, and should include comments describing what options are present. The instructions are also needed in the configuration section of the README.md 
+* A basic configuration for the plugin in the appropriate global config file: `conf.d/python.d.conf`, which is also in YAML format.  Either add a line that reads `# <module_name>: yes` if the module is to be enabled by default, or one that reads `<module_name>: no` if it is to be disabled by default.
+* A line for the plugin in `python.d/Makefile.am` under `dist_python_DATA`.
+* A line for the plugin configuration file in `conf.d/Makefile.am`, under `dist_pythonconfig_DATA`
+* Optionally, chart information in `web/dashboard_info.js`.  This generally involves specifying a name and icon for the section, and may include descriptions for the section or individual charts.
+
 
 ## Disclaimer
 
@@ -60,7 +74,7 @@ Writing new python module is simple. You just need to remember to include 5 majo
 - **_get_data** method
 - all code needs to be compatible with Python 2 (**≥ 2.7**) *and* 3 (**≥ 3.1**)
 
-If you plan to submit the module in a PR, make sure and go through the [PR checklist for new modules](https://github.com/netdata/netdata/wiki/New-Module-PR-Checklist) beforehand to make sure you have updated all the files you need to.
+If you plan to submit the module in a PR, make sure and go through the [PR checklist for new modules](#pull-request-checklist-for-python-plugins) beforehand to make sure you have updated all the files you need to.
 
 ### Global variables `ORDER` and `CHART`
 

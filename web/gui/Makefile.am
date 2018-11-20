@@ -11,6 +11,8 @@ CLEANFILES = \
 DASHBOARD_JS_FILES = \
     src/dashboard.js/prologue.js.inc \
     src/dashboard.js/utils.js \
+    src/dashboard.js/server-detection.js \
+    src/dashboard.js/dependencies.js \
     src/dashboard.js/error-handling.js \
     src/dashboard.js/compatibility.js \
     src/dashboard.js/xss.js \
@@ -18,6 +20,8 @@ DASHBOARD_JS_FILES = \
     src/dashboard.js/units-conversion.js \
     src/dashboard.js/options.js \
     src/dashboard.js/localstorage.js \
+    src/dashboard.js/timeout.js \
+    src/dashboard.js/themes.js \
     src/dashboard.js/charting/dygraph.js \
     src/dashboard.js/charting/sparkline.js \
     src/dashboard.js/charting/google-charts.js \
@@ -27,6 +31,8 @@ DASHBOARD_JS_FILES = \
     src/dashboard.js/charting/d3.js \
     src/dashboard.js/charting/peity.js \
     src/dashboard.js/charting.js \
+    src/dashboard.js/chart-registry.js \
+    src/dashboard.js/common.js \
     src/dashboard.js/main.js \
     src/dashboard.js/alarms.js \
     src/dashboard.js/registry.js \
@@ -53,10 +59,11 @@ dist_web_DATA = \
 	favicon.ico \
 	goto-host-from-alarm.html \
 	index.html \
+	main.css \
+	main.js \
 	infographic.html \
 	robots.txt \
 	refresh-badges.js \
-	registry.html \
 	sitemap.xml \
 	tv.html \
 	version.txt \
@@ -120,18 +127,32 @@ dist_webimages_DATA = \
 	images/check-mark-2-multi-size-green.ico \
 	images/netdata.svg \
 	images/post.png \
-	images/seo-performance-16.png \
-	images/seo-performance-24.png \
-	images/seo-performance-32.png \
-	images/seo-performance-48.png \
-	images/seo-performance-64.png \
-	images/seo-performance-72.png \
-	images/seo-performance-114.png \
-	images/seo-performance-128.png \
-	images/seo-performance-256.png \
-	images/seo-performance-512.png \
-	images/seo-performance-multi-size.ico \
-	images/seo-performance-multi-size.icns \
+	images/android-icon-36x36.png \
+	images/android-icon-48x48.png \
+	images/android-icon-72x72.png \
+	images/android-icon-96x96.png \
+	images/android-icon-144x144.png \
+	images/android-icon-192x192.png \
+    images/apple-icon-57x57.png \
+    images/apple-icon-60x60.png \
+    images/apple-icon-72x72.png \
+    images/apple-icon-76x76.png \
+    images/apple-icon-114x114.png \
+    images/apple-icon-120x120.png \
+    images/apple-icon-144x144.png \
+    images/apple-icon-152x152.png \
+    images/apple-icon-180x180.png \
+    images/apple-icon-precomposed.png \
+    images/apple-icon.png \
+    images/favicon-16x16.png \
+    images/favicon-32x32.png \
+    images/favicon-96x96.png \
+    images/favicon.ico \
+    images/ms-icon-70x70.png \
+    images/ms-icon-144x144.png \
+    images/ms-icon-150x150.png \
+    images/ms-icon-310x310.png \
+	images/banner-icon-144x144.png \
 	$(NULL)
 
 dashboard.js: $(DASHBOARD_JS_FILES)
