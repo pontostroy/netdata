@@ -1,0 +1,206 @@
+diff --git a/data/themes/maldives/Main.qml b/data/themes/maldives/Main.qml
+index 95f2f70..b80f3b5 100644
+--- a/data/themes/maldives/Main.qml
++++ b/data/themes/maldives/Main.qml
+@@ -22,14 +22,14 @@
+ *
+ ***************************************************************************/
+ 
+-import QtQuick ${COMPONENTS_VERSION}
+-import SddmComponents ${COMPONENTS_VERSION}
++import QtQuick 2.0
++import SddmComponents 2.0
+ 
+ Rectangle {
+     id: container
+-    width: 640
+-    height: 480
+-
++    width: 1200
++    height: 800
++    color: "#2d4df7"
+     LayoutMirroring.enabled: Qt.locale().textDirection == Qt.RightToLeft
+     LayoutMirroring.childrenInherit: true
+ 
+@@ -47,9 +47,12 @@ Rectangle {
+     }
+ 
+     Background {
++        y: 160
++        width: 1920
++        height: 1080
++        fillMode: 2
+         anchors.fill: parent
+         source: config.background
+-        fillMode: Image.PreserveAspectCrop
+         onStatusChanged: {
+             if (status == Image.Error && source != config.defaultBackground) {
+                 source = config.defaultBackground
+@@ -67,7 +70,7 @@ Rectangle {
+             anchors.margins: 5
+             anchors.top: parent.top; anchors.right: parent.right
+ 
+-            color: "white"
++            color: "#dddddd"
+             timeFont.family: "Oxygen"
+         }
+ 
+@@ -78,6 +81,8 @@ Rectangle {
+             anchors.margins: 64
+             width: renewal.width+32
+             height: renewal.height+32
++            anchors.leftMargin: 0
++            anchors.topMargin: 0
+             visible: renewal.visible
+ 
+             source: "rectangle.png"
+@@ -88,6 +93,8 @@ Rectangle {
+             anchors.centerIn: renewalImg
+             visible: false
+             radius: 8
++            anchors.verticalCenterOffset: 0
++            anchors.horizontalCenterOffset: 0
+             color: "transparent"
+         }
+ 
+@@ -112,7 +119,7 @@ Rectangle {
+                     width: parent.width
+                     text: textConstants.welcomeText.arg(sddm.hostName)
+                     wrapMode: Text.WordWrap
+-                    font.pixelSize: 24
++                    font.pixelSize: 16
+                     elide: Text.ElideRight
+                     horizontalAlignment: Text.AlignHCenter
+                 }
+@@ -172,66 +179,6 @@ Rectangle {
+                     }
+                 }
+ 
+-                Row {
+-                    spacing: 4
+-                    width: parent.width / 2
+-                    z: 100
+-
+-                    Column {
+-                        z: 100
+-                        width: parent.width * 1.3
+-                        spacing : 4
+-                        anchors.bottom: parent.bottom
+-
+-                        Text {
+-                            id: lblSession
+-                            width: parent.width
+-                            text: textConstants.session
+-                            wrapMode: TextEdit.WordWrap
+-                            font.bold: true
+-                            font.pixelSize: 12
+-                        }
+-
+-                        ComboBox {
+-                            id: session
+-                            width: parent.width; height: 30
+-                            font.pixelSize: 14
+-
+-                            arrowIcon: "angle-down.png"
+-
+-                            model: sessionModel
+-                            index: sessionModel.lastIndex
+-
+-                            KeyNavigation.backtab: password; KeyNavigation.tab: layoutBox
+-                        }
+-                    }
+-
+-                    Column {
+-                        z: 101
+-                        width: parent.width * 0.7
+-                        spacing : 4
+-                        anchors.bottom: parent.bottom
+-
+-                        Text {
+-                            id: lblLayout
+-                            width: parent.width
+-                            text: textConstants.layout
+-                            wrapMode: TextEdit.WordWrap
+-                            font.bold: true
+-                            font.pixelSize: 12
+-                        }
+-
+-                        LayoutBox {
+-                            id: layoutBox
+-                            width: parent.width; height: 30
+-                            font.pixelSize: 14
+-
+-                            arrowIcon: "angle-down.png"
+-
+-                            KeyNavigation.backtab: session; KeyNavigation.tab: loginButton
+-                        }
+-                    }
+-                }
+ 
+                 Column {
+                     width: parent.width
+@@ -252,7 +199,9 @@ Rectangle {
+                     Button {
+                         id: loginButton
+                         text: textConstants.login
++                        textColor: "#000000"
+                         width: parent.btnWidth
++                        color: "#ffffff"
+ 
+                         onClicked: sddm.login(name.text, password.text, sessionIndex)
+ 
+@@ -262,7 +211,9 @@ Rectangle {
+                     Button {
+                         id: shutdownButton
+                         text: textConstants.shutdown
++                        textColor: "#000000"
+                         width: parent.btnWidth
++                        color: "#ffffff"
+ 
+                         onClicked: sddm.powerOff()
+ 
+@@ -272,7 +223,9 @@ Rectangle {
+                     Button {
+                         id: rebootButton
+                         text: textConstants.reboot
++                        textColor: "#000000"
+                         width: parent.btnWidth
++                        color: "#ffffff"
+ 
+                         onClicked: sddm.reboot()
+ 
+diff --git a/data/themes/maldives/background.jpg b/data/themes/maldives/background.jpg
+deleted file mode 100644
+index 985458d..0000000
+Binary files a/data/themes/maldives/background.jpg and /dev/null differ
+diff --git a/data/themes/maldives/metadata.desktop b/data/themes/maldives/metadata.desktop
+index 40bd3e0..acd0fa4 100644
+--- a/data/themes/maldives/metadata.desktop
++++ b/data/themes/maldives/metadata.desktop
+@@ -13,4 +13,4 @@ ConfigFile=theme.conf
+ TranslationsDirectory=translations
+ Email=abdurrahmanavci@gmail.com
+ Theme-Id=maldives
+-Theme-API=${COMPONENTS_VERSION}
++Theme-API=2.0
+diff --git a/data/themes/maldives/theme.conf b/data/themes/maldives/theme.conf
+index 17e0c26..60807b0 100644
+--- a/data/themes/maldives/theme.conf
++++ b/data/themes/maldives/theme.conf
+@@ -1,2 +1,2 @@
+ [General]
+-background=background.jpg
++background=background.png
+diff --git a/services/sddm.service.in b/services/sddm.service.in
+index df03d92..cf8cfaf 100644
+--- a/services/sddm.service.in
++++ b/services/sddm.service.in
+@@ -2,7 +2,7 @@
+ Description=Simple Desktop Display Manager
+ Documentation=man:sddm(1) man:sddm.conf(5)
+ Conflicts=getty@tty1.service
+-After=systemd-user-sessions.service getty@tty1.service plymouth-quit.service
++After=systemd-user-sessions.service getty@tty1.service plymouth-quit.service network-online.target
+ 
+ [Service]
+ ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/sddm

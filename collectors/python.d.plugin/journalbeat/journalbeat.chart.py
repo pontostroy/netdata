@@ -24,7 +24,7 @@ CHARTS = {
             ['total_p', 'Total out', 'incremental', 1, -1],
             ['failed_o', 'Failed', 'incremental', 1,1],
             ['published_p','Published', 'incremental',1,-1],
-            ['active_o','Active', 'incremental',1,-1],
+            #['active_o','Active', 'incremental',1,-1],
         ]
         },
 
@@ -33,7 +33,7 @@ CHARTS = {
                     'Beats', 'area'],
         'lines': [
             ["acked_o"],
-            ["active_o"],
+            #["active_o"],
             ["batches_o"],
             ["dropped_o"],
             ["duplicates_o"],
@@ -56,7 +56,7 @@ CHARTS = {
                     'Beats', 'area'],
         'lines': [
             ["acked_p"],
-            ["active_p"],
+            #["active_p"],
             ["dropped_p"],
             ["failed_p"],
             ["filtered_p"],
