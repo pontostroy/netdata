@@ -2,6 +2,7 @@
 
  - `/proc/net/dev` (all network interfaces for all their values)
  - `/proc/diskstats` (all disks for all their values)
+ - `/proc/mdstat` (status of RAID arrays)
  - `/proc/net/snmp` (total IPv4, TCP and UDP usage)
  - `/proc/net/snmp6` (total IPv6 usage)
  - `/proc/net/netstat` (more IPv4 usage)
@@ -18,6 +19,7 @@
  - `/proc/softirqs` (total and per core software interrupts)
  - `/proc/loadavg` (system load and total processes running)
  - `/proc/sys/kernel/random/entropy_avail` (random numbers pool availability - used in cryptography)
+ - `/sys/class/power_supply` (power supply properties)
  - `ksm` Kernel Same-Page Merging performance (several files under `/sys/kernel/mm/ksm`).
  - `netdata` (internal netdata resources utilization)
 
@@ -117,7 +119,7 @@ Then edit `netdata.conf` and find the following section. This is the basic plugi
 	# path to get h/w sector size = /sys/block/%s/queue/hw_sector_size
 	# path to get h/w sector size for partitions = /sys/dev/block/%lu:%lu/subsystem/%s/../queue
 /hw_sector_size
-        
+
 ```
 
 For each virtual disk, physical disk and partition you will have a section like this:
@@ -160,11 +162,50 @@ But sometimes you need disable performance metrics for all devices with the same
  251       2 zram2 27487 0 219896 188 79953 0 639624 1640 0 1828 1828
  251       3 zram3 27348 0 218784 152 79952 0 639616 1960 0 2060 2104
 ```
-All zram devices starts with `251` number and all loop devices starts with `7`.  
+All zram devices starts with `251` number and all loop devices starts with `7`.
 So, to disable performance metrics for all loop devices you could add `performance metrics for disks with major 7 = no` to `[plugin:proc:/proc/diskstats]` section.
 ```
 [plugin:proc:/proc/diskstats]
        performance metrics for disks with major 7 = no
+```
+
+## Monitoring RAID arrays
+
+### Monitored RAID array metrics
+
+1. **Health** Number of failed disks in every array (aggregate chart).
+
+2. **Disks stats**
+ * total (number of devices array ideally would have)
+ * inuse (number of devices currently are in use)
+
+3. **Mismatch count**
+ * unsynchronized blocks
+
+4. **Current status**
+ * resync in percent
+ * recovery in percent
+ * reshape in percent
+ * check in percent
+
+5. **Operation status** (if resync/recovery/reshape/check is active)
+ * finish in minutes
+ * speed in megabytes/s
+
+6. **Nonredundant array availability**
+
+#### configuration
+
+```
+[plugin:proc:/proc/mdstat]
+  # faulty devices = yes
+  # nonredundant arrays availability = yes
+  # mismatch count = auto
+  # disk stats = yes
+  # operation status = yes
+  # make charts obsolete = yes
+  # filename to monitor = /proc/mdstat
+  # mismatch_cnt filename to monitor = /sys/block/%s/md/mismatch_cnt
 ```
 
 ## Monitoring CPUs
@@ -219,7 +260,7 @@ SYNPROXY is a netfilter module, in the Linux kernel (since version 3.12). It is 
 
 The net effect of this, is that the real servers will not notice any change during the attack. The valid TCP connections will pass through and served, while the attack will be stopped at the firewall.
 
-To use SYNPROXY on your firewall, please follow our setup guides:
+Netdata does not enable SYNPROXY. It just uses the SYNPROXY metrics exposed by your kernel, so you will first need to configure it. The hard way is to run iptables SYNPROXY commands directly on the console. An easier way is to use [FireHOL](https://firehol.org/), which, is a firewall manager for iptables. FireHOL can configure SYNPROXY using the following setup guides:
 
  - **[Working with SYNPROXY](https://github.com/firehol/firehol/wiki/Working-with-SYNPROXY)**
  - **[Working with SYNPROXY and traps](https://github.com/firehol/firehol/wiki/Working-with-SYNPROXY-and-traps)**
@@ -239,4 +280,67 @@ Example image:
 
 ![ddos](https://cloud.githubusercontent.com/assets/2662304/14398891/6016e3fc-fdf0-11e5-942b-55de6a52cb66.gif)
 
-See Linux Anti-DDoS in action at: **[netdata demo site (with SYNPROXY enabled)](https://registry.my-netdata.io/#menu_netfilter_submenu_synproxy)** 
+See Linux Anti-DDoS in action at: **[netdata demo site (with SYNPROXY enabled)](https://registry.my-netdata.io/#menu_netfilter_submenu_synproxy)**
+
+## Linux power supply
+
+This module monitors various metrics reported by power supply drivers
+on Linux. This allows tracking and alerting on things like remaining
+battery capacity.
+
+Depending on the underlying driver, it may provide the following charts
+and metrics:
+
+1. Capacity: The power supply capacity expressed as a percentage.
+  * capacity\_now
+
+2. Charge: The charge for the power supply, expressed as amphours.
+  * charge\_full\_design
+  * charge\_full
+  * charge\_now
+  * charge\_empty
+  * charge\_empty\_design
+
+3. Energy: The energy for the power supply, expressed as watthours.
+  * energy\_full\_design
+  * energy\_full
+  * energy\_now
+  * energy\_empty
+  * energy\_empty\_design
+
+2. Voltage: The voltage for the power supply, expressed as volts.
+  * voltage\_max\_design
+  * voltage\_max
+  * voltage\_now
+  * voltage\_min
+  * voltage\_min\_design
+
+#### configuration
+
+```
+[plugin:proc:/sys/class/power_supply]
+    # battery capacity = yes
+    # battery charge = no
+    # battery energy = no
+    # power supply voltage = no
+    # keep files open = auto
+    # directory to monitor = /sys/class/power_supply
+```
+
+#### notes
+
+* Most drivers provide at least the first chart. Battery powered ACPI
+compliant systems (like most laptops) provide all but the third, but do
+not provide all of the metrics for each chart.
+
+* Current, energy, and voltages are reported with a _very_ high precision
+by the power\_supply framework.  Usually, this is far higher than the
+actual hardware supports reporting, so expect to see changes in these
+charts jump instead of scaling smoothly.
+
+* If `max` or `full` attribute is defined by the driver, but not a
+corresponding `min` or `empty` attribute, then Netdata will still provide
+the corresponding `min` or `empty`, which will then always read as zero.
+This way, alerts which match on these will still work.
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Fcollectors%2Fproc.plugin%2FREADME&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()

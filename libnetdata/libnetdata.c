@@ -50,7 +50,7 @@ static inline void print_allocations(const char *file, const char *function, con
             type, size
     );
 
-    fprintf(stderr, "%s iteration %zu MEMORY ALLOCATIONS: (%04lu@%-40.40s:%-40.40s): Allocated %zd KB (%+zd B), mmapped %zd KB (%+zd B): %s : malloc %zd (%+zd), calloc %zd (%+zd), realloc %zd (%+zd), strdup %zd (%+zd), free %zd (%+zd)\n",
+    fprintf(stderr, "%s iteration %zu MEMORY ALLOCATIONS: (%04lu@%-40.40s:%-40.40s): Allocated %zd KiB (%+zd B), mmapped %zd KiB (%+zd B): %s : malloc %zd (%+zd), calloc %zd (%+zd), realloc %zd (%+zd), strdup %zd (%+zd), free %zd (%+zd)\n",
             netdata_thread_tag(),
             log_thread_memory_allocations,
             line, file, function,
@@ -1381,17 +1381,19 @@ void recursive_config_double_dir_load(const char *user_path, const char *stock_p
                 }
             }
 
-            if(de->d_type == DT_REG || de->d_type == DT_LNK) {
+            if(de->d_type == DT_UNKNOWN || de->d_type == DT_REG || de->d_type == DT_LNK) {
                 size_t len = strlen(de->d_name);
                 if(path_is_file(udir, de->d_name) &&
                    len > 5 && !strcmp(&de->d_name[len - 5], ".conf")) {
                     char *filename = strdupz_path_subpath(udir, de->d_name);
+                    debug(D_HEALTH, "CONFIG calling callback for user file '%s'", filename);
                     callback(filename, data);
                     freez(filename);
+                    continue;
                 }
-                else
-                    debug(D_HEALTH, "CONFIG ignoring user-config file '%s/%s'", udir, de->d_name);
             }
+
+            debug(D_HEALTH, "CONFIG ignoring user-config file '%s/%s' of type %d", udir, de->d_name, (int)de->d_type);
         }
 
         closedir(dir);
@@ -1426,21 +1428,26 @@ void recursive_config_double_dir_load(const char *user_path, const char *stock_p
                 }
             }
 
-            if(de->d_type == DT_REG || de->d_type == DT_LNK) {
+            if(de->d_type == DT_UNKNOWN || de->d_type == DT_REG || de->d_type == DT_LNK) {
                 size_t len = strlen(de->d_name);
                 if(path_is_file(sdir, de->d_name) && !path_is_file(udir, de->d_name) &&
                    len > 5 && !strcmp(&de->d_name[len - 5], ".conf")) {
                     char *filename = strdupz_path_subpath(sdir, de->d_name);
+                    debug(D_HEALTH, "CONFIG calling callback for stock file '%s'", filename);
                     callback(filename, data);
                     freez(filename);
+                    continue;
                 }
-                else
-                    debug(D_HEALTH, "CONFIG ignoring stock config file '%s/%s'", sdir, de->d_name);
+
             }
+
+            debug(D_HEALTH, "CONFIG ignoring stock-config file '%s/%s' of type %d", udir, de->d_name, (int)de->d_type);
         }
 
         closedir(dir);
     }
+
+    debug(D_HEALTH, "CONFIG done traversing user-config directory '%s', stock config directory '%s'", udir, sdir);
 
     freez(udir);
     freez(sdir);

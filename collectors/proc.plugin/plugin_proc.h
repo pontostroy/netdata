@@ -26,6 +26,7 @@ extern void *proc_main(void *ptr);
 
 extern int do_proc_net_dev(int update_every, usec_t dt);
 extern int do_proc_diskstats(int update_every, usec_t dt);
+extern int do_proc_mdstat(int update_every, usec_t dt);
 extern int do_proc_net_snmp(int update_every, usec_t dt);
 extern int do_proc_net_snmp6(int update_every, usec_t dt);
 extern int do_proc_net_netstat(int update_every, usec_t dt);
@@ -52,6 +53,7 @@ extern int do_proc_net_sockstat(int update_every, usec_t dt);
 extern int do_proc_net_sockstat6(int update_every, usec_t dt);
 extern int do_proc_net_sctp_snmp(int update_every, usec_t dt);
 extern int do_ipc(int update_every, usec_t dt);
+extern int do_sys_class_power_supply(int update_every, usec_t dt);
 extern int get_numa_node_count(void);
 
 // metrics that need to be shared among data collectors

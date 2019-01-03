@@ -102,11 +102,11 @@ char *sensor_config_file = NULL;
  * - See ipmi_monitoring.h for descriptions of these flags.
  */
 int reread_sdr_cache = 0;
-int ignore_non_interpretable_sensors = 1;
+int ignore_non_interpretable_sensors = 0;
 int bridge_sensors = 0;
 int interpret_oem_data = 0;
 int shared_sensors = 0;
-int discrete_reading = 0;
+int discrete_reading = 1;
 int ignore_scanning_disabled = 0;
 int assume_bmc_owner = 0;
 int entity_sensor_names = 0;
@@ -321,7 +321,7 @@ static void send_chart_to_netdata_for_units(int units) {
 
     switch(units) {
         case IPMI_MONITORING_SENSOR_UNITS_CELSIUS:
-            printf("CHART ipmi.temperatures_c '' 'System Celcius Temperatures read by IPMI' 'Celcius' 'temperatures' 'ipmi.temperatures_c' 'line' %d %d\n"
+            printf("CHART ipmi.temperatures_c '' 'System Celsius Temperatures read by IPMI' 'Celsius' 'temperatures' 'ipmi.temperatures_c' 'line' %d %d\n"
                    , netdata_priority + 10
                    , netdata_update_every
             );
@@ -665,10 +665,13 @@ static void netdata_get_sensor(
 
     if(!sn) {
         // not found, create it
-
         // check if it is excluded
-        if(excluded_record_ids_check(record_id))
+        if(excluded_record_ids_check(record_id)) {
+            if(debug) fprintf(stderr, "Sensor '%s' is excluded by excluded_record_ids_check()\n", sensor_name);
             return;
+        }
+
+        if(debug) fprintf(stderr, "Allocating new sensor data record for sensor '%s', id %d, number %d, type %d, state %d, units %d, reading_type %d\n", sensor_name, record_id, sensor_number, sensor_type, sensor_state, sensor_units, sensor_reading_type);
 
         sn = calloc(1, sizeof(struct sensor));
         if(!sn) {
@@ -688,6 +691,9 @@ static void netdata_get_sensor(
 
         sn->next = sensors_root;
         sensors_root = sn;
+    }
+    else {
+        if(debug) fprintf(stderr, "Reusing sensor record for sensor '%s', id %d, number %d, type %d, state %d, units %d, reading_type %d\n", sensor_name, record_id, sensor_number, sensor_type, sensor_state, sensor_units, sensor_reading_type);
     }
 
     switch(sensor_reading_type) {
@@ -710,13 +716,16 @@ static void netdata_get_sensor(
             break;
 
         default:
+            if(debug) fprintf(stderr, "Unknown reading type - Ignoring sensor record for sensor '%s', id %d, number %d, type %d, state %d, units %d, reading_type %d\n", sensor_name, record_id, sensor_number, sensor_type, sensor_state, sensor_units, sensor_reading_type);
             sn->ignore = 1;
             break;
     }
 
     // check if it is excluded
-    if(excluded_status_record_ids_check(record_id))
+    if(excluded_status_record_ids_check(record_id)) {
+        if(debug) fprintf(stderr, "Sensor '%s' is excluded for status check, by excluded_status_record_ids_check()\n", sensor_name);
         return;
+    }
 
     switch(sensor_state) {
         case IPMI_MONITORING_STATE_NOMINAL:
@@ -963,12 +972,13 @@ _ipmimonitoring_sensors (struct ipmi_monitoring_ipmi_config *ipmi_config)
             goto cleanup;
         }
 
-        if (!(sensor_bitmask_strings = ipmi_monitoring_sensor_read_sensor_bitmask_strings (ctx)))
-        {
-            error( "ipmi_monitoring_sensor_read_sensor_bitmask_strings(): %s",
-                    ipmi_monitoring_ctx_errormsg (ctx));
-            goto cleanup;
-        }
+         /* it's ok for this to be NULL, i.e. sensor_bitmask ==
+          * IPMI_MONITORING_SENSOR_BITMASK_TYPE_UNKNOWN
+          */
+        sensor_bitmask_strings = ipmi_monitoring_sensor_read_sensor_bitmask_strings (ctx);
+        
+        
+        
 #endif // NETDATA_COMMENTED
 
         if ((sensor_reading_type = ipmi_monitoring_sensor_read_sensor_reading_type (ctx)) < 0)
@@ -1075,7 +1085,8 @@ _ipmimonitoring_sensors (struct ipmi_monitoring_ipmi_config *ipmi_config)
         else
             printf (", N/A");
 
-        if (sensor_bitmask_type != IPMI_MONITORING_SENSOR_BITMASK_TYPE_UNKNOWN)
+        if (sensor_bitmask_type != IPMI_MONITORING_SENSOR_BITMASK_TYPE_UNKNOWN
+            && sensor_bitmask_strings)
         {
             unsigned int i = 0;
 

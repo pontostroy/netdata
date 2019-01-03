@@ -35,38 +35,52 @@ jobs:
   - name: ubuntu 14.04 (not containerized)
     install: sudo apt-get install -y libcap2-bin zlib1g-dev uuid-dev fakeroot
     script: fakeroot ./netdata-installer.sh --dont-wait --dont-start-it --install $HOME
+  - name: alpine + lifecycle
+    script: docker run -it -v "${PWD}:/code:rw" -w /code "netdata/os-test:alpine" ./tests/lifecycle.sh
   - name: ubuntu 18.04
-    script: ".travis/containerized_build.sh ubuntu1804"
+    script: docker run -it -v "${PWD}:/code:rw" -w /code "netdata/os-test:ubuntu1804" ./netdata-installer.sh --dont-wait --dont-start-it --install /tmp
   - name: CentOS 7
-    script: ".travis/containerized_build.sh centos7"
+    script: docker run -it -v "${PWD}:/code:rw" -w /code "netdata/os-test:centos7" ./netdata-installer.sh --dont-wait --dont-start-it --install /tmp
   - name: CentOS 6
-    script: ".travis/containerized_build.sh centos6"
-  - name: alpine
-    script: ".travis/containerized_build.sh alpine"
+    script: docker run -it -v "${PWD}:/code:rw" -w /code "netdata/os-test:centos6" ./netdata-installer.sh --dont-wait --dont-start-it --install /tmp
 
   - stage: packaging
     name: Create release
-    install: sudo apt update -y && sudo apt-get install -y gnupg libcap2-bin zlib1g-dev uuid-dev fakeroot python-pip && sudo apt install -y --only-upgrade docker-ce && docker info
+    install:
+    - sudo apt-get install -y gnupg libcap2-bin zlib1g-dev uuid-dev fakeroot python-pip
+    - sudo apt install -y --only-upgrade docker-ce
+    - docker info
     before_script: sudo pip install git-semver
-    script: ".travis/releaser.sh"
+    script: ".travis/releaser.sh && .travis/labeler.sh" # labeler should be replaced with GitHub Actions when they hit GA
     git:
       depth: false
 
   - stage: nightlies
-    name: tarball and self-extractor build
+    name: docker images
+    install:
+    - sudo apt update
+    - sudo apt install -y --only-upgrade docker-ce
+    - docker info
+    script: "packaging/docker/build.sh"
+    env: REPOSITORY="netdata/netdata"
+  - name: tarball and self-extractor build
+    before_install: openssl aes-256-cbc -K $encrypted_8daf19481253_key -iv $encrypted_8daf19481253_iv -in .travis/gcs-credentials.json.enc -out .travis/gcs-credentials.json -d
     install: sudo apt-get install -y gnupg libcap2-bin zlib1g-dev uuid-dev fakeroot
     script: ".travis/create_artifacts.sh"
-  - name: docker images
-    install: sudo apt update -y && sudo apt install -y --only-upgrade docker-ce && docker info
-    script: "docker/build.sh"
-    env: REPOSITORY="netdata/netdata"
+    deploy:
+      provider: gcs
+      edge:
+        branch: gcs-ng
+      project_id: netdata-storage
+      credentials: .travis/gcs-credentials.json
+      bucket: "netdata-nightlies"
+      skip_cleanup: true
+      local_dir: "upload"
   - name: changelog generation
     script: ".travis/generate_changelog.sh"
     env: COMMIT_AND_PUSH=1
     git:
       depth: false
-  - name: labeler # This job should be replaced with GitHub Actions when they hit GA
-    script: ".travis/labeler.sh"
 
 notifications:
   webhooks: https://app.fossa.io/hooks/travisci

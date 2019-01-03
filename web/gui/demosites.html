@@ -666,7 +666,7 @@ p {
         <div class=site-logo>my-netdata.io</div>
         <ul class="site-nav inline-block-list">
             <li><a href=https://github.com/netdata/netdata data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label="Source code" target="_blank">Source code</a>
-            <li><a href=https://github.com/netdata/netdata/wiki data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Docs target="_blank">Docs</a>
+            <li><a href=https://docs.netdata.cloud data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Docs target="_blank">Docs</a>
         </ul>
     </div>
     <div class=site-promo><h1><span class="title">Get control<br/>of your Linux servers</span></h1>
@@ -680,8 +680,8 @@ p {
             with stunning, <strong>interactive</strong> web dashboards
             and powerful <strong>performance</strong> and <strong>health</strong> alarms.
         <div class=cta-option>
-            <a class="btn btn-download" href=https://github.com/netdata/netdata/tree/master/installer#installation data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Install><strong>Install netdata now</strong></a>
-            <a class=last-update href=https://github.com/netdata/netdata/releases data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Releases>See netdata releases</a></div>
+            <a class="btn btn-download" href="https://docs.netdata.cloud/packaging/installer/" data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Install><strong>Install netdata now</strong></a>
+            <a class=last-update href="https://github.com/netdata/netdata/releases" data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Releases>See netdata releases</a></div>
         <div class=cta-option>
             <a class="btn btn-alt" href="#demosites" data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Demo>netdata live demo</a>
         </div>
@@ -1164,9 +1164,9 @@ p {
                 netdata can generate auto-refreshing <strong><a href="https://github.com/netdata/netdata/tree/master/web/api/badges#netdata-badges" target="_blank" data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=Badges>badges</a></strong>, like these:
                 </small>
             <br/>
-            <embed style="padding-top: 10px; padding-botton: 25px;" src="//registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_entries&dimensions=persons&after=-86400&options=unaligned&group=incremental-sum&label=new%20users%20today&units=null&value_color=blue&precision=0&refresh=60&v42" type="image/svg+xml" height="20" />
-            <embed style="padding-top: 10px; padding-botton: 25px;" src="//registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_entries&dimensions=machines&group=incremental-sum&after=-86400&options=unaligned&label=servers%20added%20today&units=null&value_color=orange&precision=0&refresh=60&v42" type="image/svg+xml" height="20" />
-            <embed style="padding-top: 10px; padding-botton: 25px;" src="//registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_sessions&after=-86400&group=incremental-sum&options=unaligned&label=sessions%20served%20today&units=null&value_color=yellowgreen&precision=0&refresh=60&v42" type="image/svg+xml" height="20" />
+            <embed style="padding-top: 10px; padding-bottom: 25px;" src="//registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_entries&dimensions=persons&after=-86400&options=unaligned&group=incremental-sum&label=new%20users%20today&units=null&value_color=blue&precision=0&refresh=60&v42" type="image/svg+xml" height="20" />
+            <embed style="padding-top: 10px; padding-bottom: 25px;" src="//registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_entries&dimensions=machines&group=incremental-sum&after=-86400&options=unaligned&label=servers%20added%20today&units=null&value_color=orange&precision=0&refresh=60&v42" type="image/svg+xml" height="20" />
+            <embed style="padding-top: 10px; padding-bottom: 25px;" src="//registry.my-netdata.io/api/v1/badge.svg?chart=netdata.registry_sessions&after=-86400&group=incremental-sum&options=unaligned&label=sessions%20served%20today&units=null&value_color=yellowgreen&precision=0&refresh=60&v42" type="image/svg+xml" height="20" />
             <br/>
             <small>These badges auto-refresh every minute.</small>
             </p>
@@ -1180,7 +1180,7 @@ p {
             </div>
         </div>
         <div class=cta-option>
-            <a class="btn btn-download" href=https://github.com/netdata/netdata/tree/master/installer#installation data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=InstallAfterDemo><strong>Install netdata now</strong></a>
+            <a class="btn btn-download" href="https://docs.netdata.cloud/packaging/installer/" data-ga-category="Outbound links" data-ga-action="Nav click" data-ga-label=InstallAfterDemo><strong>Install netdata now</strong></a>
         </div>
     </div>
 </div>
@@ -1269,7 +1269,7 @@ p {
             t.GoogleAnalyticsObject = n, t[n] || (t[n] = function () {
                 (t[n].q = t[n].q || []).push(arguments)
             }), t[n].l = +new Date, o = e.createElement(a), i = e.getElementsByTagName(a)[0], o.src = "//www.google-analytics.com/analytics.js", i.parentNode.insertBefore(o, i)
-        }(t, r, "script", "ga"), ga("create", "UA-64295674-3", "auto"), ga("send", "pageview"), t.document.addEventListener("click", n)
+        }(t, r, "script", "ga"), ga("create", "UA-64295674-3", "auto"), ga("send", "pageview", "/site"+window.location.pathname), t.document.addEventListener("click", n)
     }
 
     function i() {

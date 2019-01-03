@@ -32,24 +32,23 @@ tomcat_priority=60000
 # will be in the proper units
 tomcat_decimal_detail=1000000
 
-# used by volume chart to convert bytes to KB
-tomcat_decimal_KB_detail=1000
+# used by volume chart to convert bytes to kB
+tomcat_decimal_kB_detail=1000
 
 tomcat_check() {
 
 	require_cmd xmlstarlet || return 1
 
-
 	# check if url, username, passwords are set
 	if [ -z "${tomcat_url}" ]; then
-	  	error "tomcat url is unset or set to the empty string"
+		error "tomcat url is unset or set to the empty string"
 		return 1
 	fi
 	if [ -z "${tomcat_user}" ]; then
 		# check backwards compatibility
 		# shellcheck disable=SC2154
 		if [ -z "${tomcatUser}" ]; then
-    	  	error "tomcat user is unset or set to the empty string"
+			error "tomcat user is unset or set to the empty string"
 			return 1
 		else
 			tomcat_user="${tomcatUser}"
@@ -59,7 +58,7 @@ tomcat_check() {
 		# check backwards compatibility
 		# shellcheck disable=SC2154
 		if [ -z "${tomcatPassword}" ]; then
-	    	error "tomcat password is unset or set to the empty string"
+			error "tomcat password is unset or set to the empty string"
 			return 1
 		else
 			tomcat_password="${tomcatPassword}"
@@ -69,8 +68,7 @@ tomcat_check() {
 	# check if we can get to tomcat's status page
 	tomcat_get
 	# shellcheck disable=2181
-	if [ $? -ne 0 ]
-		then
+	if [ $? -ne 0 ]; then
 		error "cannot get to status page on URL '${tomcat_url}'. Please make sure tomcat url, username and password are correct."
 		return 1
 	fi
@@ -84,8 +82,12 @@ tomcat_check() {
 
 tomcat_get() {
 	# collect tomcat values
-	tomcat_port="$(IFS=/ read -ra a <<< "$tomcat_url"; hostport=${a[2]}; echo "${hostport#*:}")"
-	mapfile -t lines < <(run curl -u "$tomcat_user":"$tomcat_password" -Ss ${tomcat_curl_opts} "$tomcat_url" |\
+	tomcat_port="$(
+		IFS=/ read -ra a <<<"$tomcat_url"
+		hostport=${a[2]}
+		echo "${hostport#*:}"
+	)"
+	mapfile -t lines < <(run curl -u "$tomcat_user":"$tomcat_password" -Ss ${tomcat_curl_opts} "$tomcat_url" |
 		run xmlstarlet sel \
 			-t -m "/status/jvm/memory" -v @free \
 			-n -m "/status/connector[@name='\"http-bio-$tomcat_port\"']/threadInfo" -v @currentThreadCount \
@@ -107,8 +109,8 @@ tomcat_create() {
 	cat <<EOF
 CHART tomcat.accesses '' "tomcat requests" "requests/s" statistics tomcat.accesses area $((tomcat_priority + 8)) $tomcat_update_every
 DIMENSION accesses '' incremental
-CHART tomcat.volume '' "tomcat volume" "KB/s" volume tomcat.volume area $((tomcat_priority + 5)) $tomcat_update_every
-DIMENSION volume '' incremental divisor ${tomcat_decimal_KB_detail}
+CHART tomcat.volume '' "tomcat volume" "kB/s" volume tomcat.volume area $((tomcat_priority + 5)) $tomcat_update_every
+DIMENSION volume '' incremental divisor ${tomcat_decimal_kB_detail}
 CHART tomcat.threads '' "tomcat threads" "current threads" statistics tomcat.threads line $((tomcat_priority + 6)) $tomcat_update_every
 DIMENSION current '' absolute 1
 DIMENSION busy '' absolute 1

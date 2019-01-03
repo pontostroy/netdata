@@ -12,9 +12,6 @@ except ImportError:
 
 from bases.FrameworkServices.SimpleService import SimpleService
 
-# default module values (can be overridden per job in `config`)
-priority = 60000
-retries = 60
 
 PORT_LATENCY = 'connect'
 
@@ -26,7 +23,7 @@ ORDER = ['latency', 'status']
 
 CHARTS = {
     'latency': {
-        'options': [None, 'TCP connect latency', 'ms', 'latency', 'portcheck.latency', 'line'],
+        'options': [None, 'TCP connect latency', 'milliseconds', 'latency', 'portcheck.latency', 'line'],
         'lines': [
             [PORT_LATENCY, 'connect', 'absolute', 100, 1000]
         ]

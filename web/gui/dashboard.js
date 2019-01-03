@@ -77,7 +77,8 @@
 // ----------------------------------------------------------------------------
 // global namespace
 
-const NETDATA = window.NETDATA || {};
+// Should stay var!
+var NETDATA = window.NETDATA || {};
 
 (function(window, document, $, undefined) {
 
@@ -158,7 +159,7 @@ NETDATA.seconds4human = function (seconds, options) {
     if (typeof options !== 'object') {
         options = defaultOptions;
     } else {
-        for (const x in defaultOptions) {
+        for (var x in defaultOptions) {
             if (typeof options[x] !== 'string') {
                 options[x] = defaultOptions[x];
             }
@@ -690,7 +691,7 @@ NETDATA.xss = {
                 } else {
                     // console.log('checking object "' + name + '"');
 
-                    for (const i in obj) {
+                    for (var i in obj) {
                         if (obj.hasOwnProperty(i) === false) {
                             continue;
                         }
@@ -805,13 +806,20 @@ NETDATA.unitsConversion = {
             'GB/s': 1024 * 1024,
             'TB/s': 1024 * 1024 * 1024
         },
+        'KiB/s': {
+            'B/s': 1 / 1024,
+            'KiB/s': 1,
+            'MiB/s': 1024,
+            'GiB/s': 1024 * 1024,
+            'TiB/s': 1024 * 1024 * 1024
+        },
         'B': {
             'B': 1,
-            'KB': 1024,
-            'MB': 1024 * 1024,
-            'GB': 1024 * 1024 * 1024,
-            'TB': 1024 * 1024 * 1024 * 1024,
-            'PB': 1024 * 1024 * 1024 * 1024 * 1024
+            'KiB': 1024,
+            'MiB': 1024 * 1024,
+            'GiB': 1024 * 1024 * 1024,
+            'TiB': 1024 * 1024 * 1024 * 1024,
+            'PiB': 1024 * 1024 * 1024 * 1024 * 1024
         },
         'KB': {
             'B': 1 / 1024,
@@ -819,6 +827,13 @@ NETDATA.unitsConversion = {
             'MB': 1024,
             'GB': 1024 * 1024,
             'TB': 1024 * 1024 * 1024
+        },
+        'KiB': {
+            'B': 1 / 1024,
+            'KiB': 1,
+            'MiB': 1024,
+            'GiB': 1024 * 1024,
+            'TiB': 1024 * 1024 * 1024
         },
         'MB': {
             'B': 1 / (1024 * 1024),
@@ -828,6 +843,14 @@ NETDATA.unitsConversion = {
             'TB': 1024 * 1024,
             'PB': 1024 * 1024 * 1024
         },
+        'MiB': {
+            'B': 1 / (1024 * 1024),
+            'KiB': 1 / 1024,
+            'MiB': 1,
+            'GiB': 1024,
+            'TiB': 1024 * 1024,
+            'PiB': 1024 * 1024 * 1024
+        },
         'GB': {
             'B': 1 / (1024 * 1024 * 1024),
             'KB': 1 / (1024 * 1024),
@@ -836,6 +859,15 @@ NETDATA.unitsConversion = {
             'TB': 1024,
             'PB': 1024 * 1024,
             'EB': 1024 * 1024 * 1024
+        },
+        'GiB': {
+            'B': 1 / (1024 * 1024 * 1024),
+            'KiB': 1 / (1024 * 1024),
+            'MiB': 1 / 1024,
+            'GiB': 1,
+            'TiB': 1024,
+            'PiB': 1024 * 1024,
+            'EiB': 1024 * 1024 * 1024
         }
         /*
         'milliseconds': {
@@ -1035,7 +1067,7 @@ NETDATA.unitsConversion = {
                 //     }
                 // }
                 const sunit = this.scalableUnits[units];
-                for (const x of Object.keys(sunit)) {
+                for (var x of Object.keys(sunit)) {
                     let m = sunit[x];
                     if (m <= max && m > tdivider) {
                         tunits = x;
@@ -1071,7 +1103,7 @@ NETDATA.unitsConversion = {
 
                     // find the max divider of all charts
                     let common_units = t[uuid];
-                    for (const x in t) {
+                    for (var x in t) {
                         if (t.hasOwnProperty(x) && t[x].divider > common_units.divider) {
                             common_units = t[x];
                         }
@@ -1138,7 +1170,7 @@ NETDATA.unitsConversion = {
         } else if (typeof this.convertibleUnits[units] !== 'undefined') {
             // units that can be converted
             if (desired_units === 'auto') {
-                for (const x in this.convertibleUnits[units]) {
+                for (var x in this.convertibleUnits[units]) {
                     if (this.convertibleUnits[units].hasOwnProperty(x)) {
                         if (this.convertibleUnits[units][x].check(max)) {
                             //console.log('DEBUG: ' + uuid.toString() + ' converting ' + units.toString() + ' to: ' + x.toString());
@@ -1194,7 +1226,7 @@ if (typeof netdataIcons === 'object') {
     //     if (NETDATA.icons.hasOwnProperty(icon) && typeof(netdataIcons[icon]) === 'string')
     //         NETDATA.icons[icon] = netdataIcons[icon];
     // }
-    for (const icon of Object.keys(NETDATA.icons)) {
+    for (var icon of Object.keys(NETDATA.icons)) {
         if (typeof(netdataIcons[icon]) === 'string') {
             NETDATA.icons[icon] = netdataIcons[icon]
         }
@@ -4754,7 +4786,7 @@ NETDATA.commonMin = {
         // for (let i in t) {
         //     if (t.hasOwnProperty(i) && t[i] < m) m = t[i];
         // }
-        for (const ti of Object.values(t)) {
+        for (var ti of Object.values(t)) {
             if (ti < m) {
                 m = ti;
             }
@@ -4818,7 +4850,7 @@ NETDATA.commonMax = {
         // for (let i in t) {
         //     if (t.hasOwnProperty(i) && t[i] > m) m = t[i];
         // }
-        for (const ti of Object.values(t)) {
+        for (var ti of Object.values(t)) {
             if (ti > m) {
                 m = ti;
             }
@@ -9645,6 +9677,7 @@ NETDATA.alarms = {
 
 NETDATA.registry = {
     server: null,         // the netdata registry server
+    cloudBaseURL: null,   // the netdata cloud base url
     person_guid: null,    // the unique ID of this browser / user
     machine_guid: null,   // the unique ID the netdata server that served dashboard.js
     hostname: 'unknown',  // the hostname of the netdata server that served dashboard.js
@@ -9706,6 +9739,7 @@ NETDATA.registry = {
         NETDATA.registry.hello(NETDATA.serverDefault, function (data) {
             if (data) {
                 NETDATA.registry.server = data.registry;
+                NETDATA.registry.cloudBaseURL = data.cloud_base_url;
                 NETDATA.registry.machine_guid = data.machine_guid;
                 NETDATA.registry.hostname = data.hostname;
 

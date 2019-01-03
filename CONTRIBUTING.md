@@ -4,7 +4,8 @@ Thank you for considering contributing to Netdata.
 
 We love to receive contributions. Maintaining a platform for monitoring everything imaginable requires a broad understanding of a plethora of technologies, systems and applications. We rely on community contributions and user feedback to continue providing the best monitoring solution out there.
 
-There are many ways to contribute, with varying requirements of skills:
+There are many ways to contribute, with varying requirements of skills, explained in detail in the following sections. 
+Specific GitHub issues we need help with can be seen [here](https://github.com/netdata/netdata/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22). Some of them are also labeled as "good first issue". 
 
 ## All NetData Users
 
@@ -20,9 +21,33 @@ Community growth allows the project to attract new talent willing to contribute.
 
 Is there anything that bothers you about netdata? Did you experience an issue while installing it or using it? Would you like to see it evolve to you need? Let us know. [Open a github issue](https://github.com/netdata/netdata/issues) to discuss it. Feedback is very important for open-source projects. We can't commit we will do everything, but your feedback influences our road-map significantly. **We rely on your feedback to make Netdata better**.
 
-#### Help the developers understand what they have to do
+### Sponsor a part of Netdata
 
-NetData is all about simplicity and meaningful presentation. It's impossible for a handful of people to know which metrics really matter when monitoring a particular software or hardware component you are interested in. Be specific about what should be collected, how the information should be presented in the dashboard and which alarms make sense in most situations.
+Netdata is a complex system, with many integrations for the various  collectors, backends and notification endpoints. As a result, we rely on help from "sponsors", a concept similar to "power users" or "product owners". To become a sponsor, just let us know in any Github issue and we will record your GitHub username in a "CONTRIBUTORS.md" in the appropriate directory.
+
+#### Sponsor a collector
+
+Netdata is all about simplicity and meaningful presentation. A "sponsor" for a collector does the following:
+ - Assists the devs with feedback on the charts.
+ - Specifies the alarms that would make sense for each metric.
+ - When the implementation passes QA, tests the implementation in production.
+ - Uses the charts and alarms in his/her day to day work and provides additional feedback.
+ - Requests additional improvements as things change (e.g. new versions of an API are available).
+
+#### Sponsor a backend
+
+We already support various [backends](backends) and we intend to support more. A "sponsor" for a backend: 
+- Suggests ways in which the information in Netdata could best be exposed to the particular backend, to facilitate meaningful presentation.
+ - When the implementation passes QA, tests the implementation in production.
+- Uses the backend in his/her day to day work and provides additional feedback, after the backend is delivered.
+ - Requests additional improvements as things change (e.g. new versions of the backend API are available).
+
+#### Sponsor a notification method
+
+Netdata delivers alarms via various [notification methods](health/notifications). A "sponsor" for a notification method:
+- Points the devs to the documentation for the API and identifies any unusual features of interest (e.g. the ability in Slack to send a notification either to a channel or to a user). 
+- Uses the notification method in production and provides feedback.
+- Requests additional improvements as things change (e.g. new versions of the API are available).
 
 ## Experienced Users
 
@@ -32,12 +57,13 @@ As the project grows, an increasing share of our time is spent on supporting thi
 
 ### Improve documentation
 
-Most of our documentation is in markdown (.md) files inside the netdata GitHub project. What remains in our Wiki will soon be moved in there as well. Don't be afraid to edit any of these documents and submit a GitHub Pull Request with your corrections/additions. 
+All of our documentation is in markdown (.md) files inside the netdata GitHub project. All of our [HTML documentation](https://docs.netdata.cloud) is generated from these files. At the top right of each documentation page you will see a pencil, that leads you directly to the markdown file that was used to generated it. Don't be afraid to afraid to click it and edit any of these documents and submit a GitHub Pull Request with your corrections/additions. 
 
+We also need help to [document each chart in the default dashboard](https://github.com/netdata/netdata/issues/279). 
 
 ## Developers
 
-We expect most contributions to be for new data collection plugins. You can read about how external plugins work [here](collectors/plugins.d/). Additional instructions are available for [Node.js plugins](collectors/node.d.plugin) and [Python plugis](collectors/python.d.plugin).
+We expect most contributions to be for new data collection plugins. You can read about how external plugins work [here](collectors/plugins.d/). Additional instructions are available for [Node.js plugins](collectors/node.d.plugin) and [Python plugins](collectors/python.d.plugin).
 
 Of course we appreciate contributions for any other part of the NetData agent, including the [daemon](daemon), [backends for long term archiving](backends/), innovative ways of using the [REST API](web/api) to create cool [Custom Dashboards](web/gui/custom/) or to include NetData charts in other applications, similarly to what can be done with [Confluence](web/gui/confluence/).
 
@@ -90,3 +116,23 @@ Your contributions should be bundled with related documentation to help users un
 
 When you contribute code to Netdata, you are automatically accepting that you will be responsible for maintaining that code in the future. So, if users need help, or report bugs, we will invite you to the related github issues to help them or fix the issues or bugs of your contributions.
 
+### Your first pull request
+
+There are several guides for pull requests, such as the following:
+- https://thenewstack.io/getting-legit-with-git-and-github-your-first-pull-request/
+- https://github.com/firstcontributions/first-contributions#first-contributions
+
+However, it's not always that simple. Our [PR approval process](#pr-approval-process) and the several merges we do every day may cause your fork to get behind the Netdata master. If you worked on something that has changed in the meantime, you will be required to do a git rebase, to bring your fork to the correct state. A very easy to follow guide on how to do it without learning all the intricacies of GitHub can be found [here](https://medium.com/@ruthmpardee/git-fork-workflow-using-rebase-587a144be470)
+
+One thing you will need to do only for your first pull request in Netdata is to accept the CLA. Until you do, the automated check for the CLA acceptance will be showing as failed. 
+
+### PR approval process
+
+Each PR automatically [requires a review](https://help.github.com/articles/about-required-reviews-for-pull-requests/) from the code owners specified in `.github/CODEOWNERS`. Depending on the files contained in your PR, several people may be need to approve it.
+
+We also have a series of automated checks running, such as linters to check code quality and QA tests. If you get an error or warning in any of those checks, you will need to click on the link included in the check to identify the root cause, so you can fix it.
+
+One special type of automated check is the "WIP" check. You may add "[WIP]" to the title of the PR, to tell us that the particular request is "Work In Progress" and should not be merged. You're still not done with it, you created it to get some feedback. When you're ready to get the final approvals and get it merged, just remove the "[WIP]" string from the title of your PR and the "WIP" check will pass.
+
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2FCONTRIBUTING&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()

@@ -8,11 +8,14 @@ from json import loads
 
 from bases.FrameworkServices.UrlService import UrlService
 
-priority = 60000
-retries = 60
-# update_every = 3
 
-ORDER = ['questions', 'cache_usage', 'cache_size', 'latency']
+ORDER = [
+    'questions',
+    'cache_usage',
+    'cache_size',
+    'latency',
+]
+
 CHARTS = {
     'questions': {
         'options': [None, 'PowerDNS Queries and Answers', 'count', 'questions', 'powerdns.questions', 'line'],

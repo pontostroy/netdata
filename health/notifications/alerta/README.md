@@ -73,8 +73,10 @@ We can test alarms using the standard approach:
     $ /opt/netdata/netdata-plugins/plugins.d/alarm-notify.sh test
 
 Note: Netdata will send 3 alarms, and because last alarm is "CLEAR"
-you will not se them in main Alerta page, you need to select to see
+you will not see them in main Alerta page, you need to select to see
 "closed" alarma in top-right lookup. A little change in `alarm-notify.sh`
 that let us test each state one by one will be useful.
 
 For more information see [https://docs.alerta.io](https://docs.alerta.io)
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Fhealth%2Fnotifications%2Falerta%2FREADME&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()

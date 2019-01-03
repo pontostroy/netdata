@@ -25,8 +25,6 @@ EXTRA_DIST = \
 	.lgtm.yml \
 	.travis \
 	.github/CODEOWNERS \
-	build/build.sh \
-	build/Dockerfile \
 	build/m4/jemalloc.m4 \
 	build/m4/ax_c___atomic.m4 \
 	build/m4/ax_check_enable_debug.m4 \
@@ -49,16 +47,14 @@ EXTRA_DIST = \
 
 SUBDIRS = \
 	diagrams \
-	makeself \
 	system \
-	contrib \
 	tests \
 	$(NULL)
 
 dist_noinst_DATA= \
 	cppcheck.sh \
 	configs.signatures \
-	docker \
+	contrib \
 	netdata.cppcheck \
 	netdata.spec \
 	package.json \
@@ -78,10 +74,12 @@ dist_noinst_DATA= \
 	docs/netdata-security.md \
 	docs/Why-Netdata.md \
 	docs/GettingStarted.md \
-	docs/generator/themes/material/partials/footer.html \
-	installer/README.md \
-	installer/UNINSTALL.md \
-	installer/UPDATE.md \
+	docs/Charts.md \
+	docs/configuration-guide.md \
+	docs/generator/custom \
+	packaging/installer/README.md \
+	packaging/installer/UNINSTALL.md \
+	packaging/installer/UPDATE.md \
 	netlify.toml \
 	$(NULL)
 
@@ -89,10 +87,10 @@ dist_noinst_DATA= \
 # should be proper init.d/openrc/systemd usable
 dist_noinst_SCRIPTS= \
 	coverity-scan.sh \
-	kickstart.sh \
-	kickstart-static64.sh \
+	packaging/installer/kickstart.sh \
+	packaging/installer/kickstart-static64.sh \
 	netdata-installer.sh \
-	installer/functions.sh \
+	packaging/installer/functions.sh \
 	docs/generator/buildhtml.sh \
 	docs/generator/buildyaml.sh \
 	docs/generator/checklinks.sh \
@@ -126,10 +124,10 @@ AM_CFLAGS = \
 	$(NULL)
 
 sbin_PROGRAMS =
-dist_cache_DATA = installer/.keep
-dist_varlib_DATA = installer/.keep
-dist_registry_DATA = installer/.keep
-dist_log_DATA = installer/.keep
+dist_cache_DATA = packaging/installer/.keep
+dist_varlib_DATA = packaging/installer/.keep
+dist_registry_DATA = packaging/installer/.keep
+dist_log_DATA = packaging/installer/.keep
 plugins_PROGRAMS =
 
 LIBNETDATA_FILES = \
@@ -240,6 +238,7 @@ PROC_PLUGIN_FILES = \
 	collectors/proc.plugin/plugin_proc.c \
 	collectors/proc.plugin/plugin_proc.h \
 	collectors/proc.plugin/proc_diskstats.c \
+	collectors/proc.plugin/proc_mdstat.c \
 	collectors/proc.plugin/proc_interrupts.c \
 	collectors/proc.plugin/proc_softirqs.c \
 	collectors/proc.plugin/proc_loadavg.c \
@@ -270,6 +269,7 @@ PROC_PLUGIN_FILES = \
 	collectors/proc.plugin/sys_devices_system_edac_mc.c \
 	collectors/proc.plugin/sys_devices_system_node.c \
 	collectors/proc.plugin/sys_fs_btrfs.c \
+	collectors/proc.plugin/sys_class_power_supply.c \
     $(NULL)
 
 TC_PLUGIN_FILES = \

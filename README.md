@@ -1,4 +1,4 @@
-# netdata [![Build Status](https://travis-ci.com/netdata/netdata.svg?branch=master)](https://travis-ci.com/netdata/netdata) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2231/badge)](https://bestpractices.coreinfrastructure.org/projects/2231) [![License: GPL v3+](https://img.shields.io/badge/License-GPL%20v3%2B-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![analytics](https://www.google-analytics.com/collect?v=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Freadme&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()
+# netdata [![Build Status](https://travis-ci.com/netdata/netdata.svg?branch=master)](https://travis-ci.com/netdata/netdata) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2231/badge)](https://bestpractices.coreinfrastructure.org/projects/2231) [![License: GPL v3+](https://img.shields.io/badge/License-GPL%20v3%2B-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Freadme&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()
   
 [![Code Climate](https://codeclimate.com/github/netdata/netdata/badges/gpa.svg)](https://codeclimate.com/github/netdata/netdata) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a994873f30d045b9b4b83606c3eb3498)](https://www.codacy.com/app/netdata/netdata?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=netdata/netdata&amp;utm_campaign=Badge_Grade) [![LGTM C](https://img.shields.io/lgtm/grade/cpp/g/netdata/netdata.svg?logo=lgtm)](https://lgtm.com/projects/g/netdata/netdata/context:cpp) [![LGTM JS](https://img.shields.io/lgtm/grade/javascript/g/netdata/netdata.svg?logo=lgtm)](https://lgtm.com/projects/g/netdata/netdata/context:javascript) [![LGTM PYTHON](https://img.shields.io/lgtm/grade/python/g/netdata/netdata.svg?logo=lgtm)](https://lgtm.com/projects/g/netdata/netdata/context:python)
 
@@ -6,7 +6,7 @@
 
 **Netdata** is **distributed, real-time, performance and health monitoring for systems and applications**. It is a highly optimized monitoring agent you install on all your systems and containers.
 
-Netdata provides **unparalleled insights**, **in real-time**, of everything happening on the systems it runs (including web servers, databases, applications), using **highly interactive web dashboards**.  It can run autonomously, without any third party components, or it can be integrated to existing monitoring toolchains (Prometheus, Graphite, OpenTSDB, Kafka, Grafana, etc).
+Netdata provides **unparalleled insights**, **in real-time**, of everything happening on the systems it runs (including web servers, databases, applications), using **highly interactive web dashboards**.  It can run autonomously, without any third party components, or it can be integrated to existing monitoring tool chains (Prometheus, Graphite, OpenTSDB, Kafka, Grafana, etc).
 
 _Netdata is **fast** and **efficient**, designed to permanently run on all systems (**physical** & **virtual** servers, **containers**, **IoT** devices), without disrupting their core function._
 
@@ -40,7 +40,7 @@ Once you use it on your systems, **there is no going back**! *You have been warn
 9. [Visualization](#visualization) - unique visualization features
 10. [What does it monitor](#what-does-it-monitor) - which metrics it collects
 11. [Documentation](#documentation) - read the docs
-12. [Community](#community) - disucss with others and get support
+12. [Community](#community) - discuss with others and get support
 13. [License](#license) - check the license of netdata
 
 
@@ -94,7 +94,7 @@ The above command will:
 2. download netdata source to `/usr/src/netdata.git`
 3. compile it, install it and start it
 
-More installation methods and additional options can be found at the [installation page](installer/#installation).
+More installation methods and additional options can be found at the [installation page](packaging/installer/#installation).
 
 To try netdata in a docker container, run this:
 
@@ -109,7 +109,7 @@ docker run -d --name=netdata \
   netdata/netdata
 ```
 
-For more information about running netdata in docker, check the [docker installation page](docker/).
+For more information about running netdata in docker, check the [docker installation page](packaging/docker/).
 
 ![image](https://user-images.githubusercontent.com/2662304/48304090-fd384080-e51b-11e8-80ae-eecb03118dda.png)
 
@@ -147,20 +147,15 @@ not just visualize metrics.
 
 ## News  
   
-`Nov 6th, 2018` - **[netdata v1.11.0 released!](https://github.com/netdata/netdata/releases)**  
-  
- - New query engine, supporting statistical functions.  
- - Fixed security issues identified by Red4Sec.com and Synacktiv.  
- - New Data Collection Modules: [`rethinkdbs`](collectors/python.d.plugin/rethinkdbs/), [`proxysql`](collectors/python.d.plugin/proxysql/), [`litespeed`](collectors/python.d.plugin/litespeed/), [`uwsgi`](collectors/python.d.plugin/uwsgi/), [`unbound`](collectors/python.d.plugin/unbound/), [`powerdns`](collectors/python.d.plugin/powerdns/), [`dockerd`](collectors/python.d.plugin/dockerd/), [`puppet`](collectors/python.d.plugin/puppet/), [`logind`](collectors/python.d.plugin/logind/), [`adaptec_raid`](collectors/python.d.plugin/adaptec_raid/), [`megacli`](collectors/python.d.plugin/megacli/), [`spigotmc`](collectors/python.d.plugin/spigotmc/), [`boinc`](collectors/python.d.plugin/boinc/), [`w1sensor`](collectors/python.d.plugin/w1sensor/), [`monit`](collectors/python.d.plugin/monit/), [`linux_power_supplies`](collectors/python.d.plugin/linux_power_supply/).  
- - Improved Data Collection Modules: [`statsd.plugin`](collectors/statsd.plugin/), [`apps.plugin`](collectors/apps.plugin/), [`freeipmi.plugin`](collectors/freeipmi.plugin/), [`proc.plugin`](collectors/proc.plugin/), [`diskspace.plugin`](collectors/diskspace.plugin/), [`freebsd.plugin`](collectors/freebsd.plugin/), [`python.d.plugin`](collectors/python.d.plugin/), [`web_log`](collectors/python.d.plugin/web_log/), [`nginx_plus`](collectors/python.d.plugin/nginx_plus/), [`ipfs`](collectors/python.d.plugin/ipfs/), [`fail2ban`](collectors/python.d.plugin/fail2ban/), [`ceph`](collectors/python.d.plugin/ceph/), [`elasticsearch`](collectors/python.d.plugin/elasticsearch/), [`redis`](collectors/python.d.plugin/redis/),   
- [`beanstalk`](collectors/python.d.plugin/beanstalk/), [`mysql`](collectors/python.d.plugin/mysql/), [`varnish`](collectors/python.d.plugin/varnish/), [`couchdb`](collectors/python.d.plugin/couchdb/), [`phpfpm`](collectors/python.d.plugin/phpfpm/), [`apache`](collectors/python.d.plugin/apache/), [`icecast`](collectors/python.d.plugin/icecast/), [`mongodb`](collectors/python.d.plugin/mongodb/), [`postgress`](collectors/python.d.plugin/postgres/), [`mdstat`](collectors/python.d.plugin/mdstat/), [`openvpn_log`](collectors/python.d.plugin/ovpn_status_log/), [`snmp`](collectors/node.d.plugin/snmp/), [`nut`](collectors/charts.d.plugin/nut/).  
-  
- - Added alarms for detecting abnormally high load average, `TCP` `SYN` and `TCP` accept queue overflows, network interfaces congestion and alarms for `bcache`, `mdstat`, `apcupsd`, `mysql`.  
- - system alarms are now enabled on FreeBSD.  
- - New notification methods: **[rocket.chat](health/notifications/rocketchat/)**, **Microsoft Teams**, **[syslog](health/notifications/syslog/)**, **fleep.io**, **[Amazon SNS](health/notifications/awssns/)**.  
-  
- - and dozens more improvements, enhancements, features and compatibility fixes  
-  
+`Nov 22nd, 2018` - **[netdata v1.11.1 released!](https://github.com/netdata/netdata/releases)**  
+
+- Improved internal database to support values above 64bit.
+- New data collection plugins: [`openldap`](collectors/python.d.plugin/openldap/), [`tor`](collectors/python.d.plugin/tor/), [`nvidia_smi`](collectors/python.d.plugin/nvidia_smi/).
+- Improved data collection plugins: netdata now supports monitoring network interface aliases, [`smartd_log`](collectors/python.d.plugin/smartd_log/), [`cpufreq`](collectors/python.d.plugin/cpufreq/), [`sensors`](collectors/python.d.plugin/sensors/).
+- Health monitoring improvements: network interface congestion alarm restored, [`alerta.io`](health/notifications/alerta/), `conntrack_max`.
+- `my-netdata`menu has been refactored. 
+- Packaging: `openrc` service definition got a few improvements.
+
 ---  
   
 `Sep 18, 2018` - **netdata has its own organization**  
@@ -452,20 +447,20 @@ Its [Plugin API](collectors/plugins.d/) supports all programing languages (anyth
 #### Provisioning Systems
 - **[Puppet](collectors/python.d.plugin/puppet/)** - connects to multiple Puppet Server and Puppet DB instances (local or remote) to collect real-time status metrics.
 
-And you can extend it, by writing plugins that collect data from any source, using any computer language.  
+You can easily extend Netdata, by writing plugins that collect data from any source, using any computer language.  
   
 ---  
   
 ## Documentation
 
-The netdata documentation is inside the repo, so by just navigating the repo on github you can find all the documentation.
+The netdata documentation is at [https://docs.netdata.cloud](https://docs.netdata.cloud). But you can also find it inside the repo, so by just navigating the repo on github you can find all the documentation.
 
 Here is a quick list:
 
 Directory|Description
 :---|:---
-[`installer`](installer/)|Instructions to install netdata on your systems.
-[`docker`](docker/)|Instructions to install netdata using docker.
+[`installer`](packaging/installer/)|Instructions to install netdata on your systems.
+[`docker`](packaging/docker/)|Instructions to install netdata using docker.
 [`daemon`](daemon/)|Information about the netdata daemon and its configuration.
 [`collectors`](collectors/)|Information about data collection plugins.
 [`health`](health/)|How netdata's health monitoring works, how to create your own alarms and how to configure alarm notification methods.
@@ -476,11 +471,11 @@ Directory|Description
 [`web/gui/custom`](web/gui/custom/)|Learn how to create custom netdata dashboards.
 [`web/gui/confluence`](web/gui/confluence/)|Learn how to create netdata dashboards on Atlassian's Confluence.
 
-But you can also check all the other directories. Most of them have plenty of documentation.
+You can also check all the other directories. Most of them have plenty of documentation.
 
 ## Community
 
-We welcome contributions. So, feel free to join the team.
+We welcome [contributions](CONTRIBUTING.md). So, feel free to join the team.
 
 To report bugs, or get help, use [GitHub Issues](https://github.com/netdata/netdata/issues).
 
@@ -497,3 +492,4 @@ You can also find netdata on:
 netdata is [GPLv3+](LICENSE).  
 
 Netdata re-distributes other open-source tools and libraries. Please check the [third party licenses](REDISTRIBUTED.md).
+

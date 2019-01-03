@@ -67,7 +67,7 @@ chooses the base container images (centos:latest). After running this you should
 be sitting inside the shell of the container.
 
 After we have entered the shell we can install Netdata. This process could not
-be easier. If you take a look at [this link](../installer/#installation), the Netdata devs give us
+be easier. If you take a look at [this link](../packaging/installer/#installation), the Netdata devs give us
 several one-liners to install netdata. I have not had any issues with these one
 liners and their bootstrapping scripts so far (If you guys run into anything do
 share). Run the following command in your container.
@@ -290,3 +290,5 @@ automatically begins to scrape them. Once achieved you do not have to think
 about the monitoring system until Prometheus cannot keep up with your scale.
 Once this happens there are options presented in the Prometheus documentation
 for solving this. Hope this was helpful, happy monitoring.
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Fbackends%2FWALKTHROUGH&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()

@@ -1,6 +1,6 @@
 # Getting Started
 
-These are your first steps **after** you have installed netdata. If you haven't installed it already, please check the [installation page](../installer).
+These are your first steps **after** you have installed netdata. If you haven't installed it already, please check the [installation page](../packaging/installer).
 
 ## Accessing the dashboard
 
@@ -14,11 +14,11 @@ http://your.server.ip:19999/
 
 **Verify Netdata is running.**
 
-Open an ssh session to the server and execute `sudo ps -e | grep netdata`. It should respond with the PID of the netdata daemon. If it prints nothing, Netdata is not running. Check the [installation page](../installer) to install it.
+Open an ssh session to the server and execute `sudo ps -e | grep netdata`. It should respond with the PID of the netdata daemon. If it prints nothing, Netdata is not running. Check the [installation page](../packaging/installer) to install it.
 
 **Verify Netdata responds to HTTP requests.**
 
-Using the same ssh session, execute `curl -Ss http://localhost:19999`. It should dump on your screen the `index.html` page of the dashboard. If it does not, check the [installation page](../installer) to install it.
+Using the same ssh session, execute `curl -Ss http://localhost:19999`. It should dump on your screen the `index.html` page of the dashboard. If it does not, check the [installation page](../packaging/installer) to install it.
 
 **Verify Netdata receives the HTTP requests.**
 
@@ -178,3 +178,5 @@ and set `SEND_EMAIL="NO"`.
 - Check [Health Monitoring](../health) for configuring your own alarms, or setting up alarm notifications.
 - Check [Streaming](../streaming) for centralizing netdata metrics.
 - Check [Backends](../backends) for long term archiving of netdata metrics to time-series databases.
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Fdocs%2FGettingStarted&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()

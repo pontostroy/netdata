@@ -7,8 +7,6 @@ from third_party import lm_sensors as sensors
 
 from bases.FrameworkServices.SimpleService import SimpleService
 
-# default module values (can be overridden per job in `config`)
-# update_every = 2
 
 ORDER = [
     'temperature',
@@ -139,7 +137,7 @@ class Service(SimpleService):
                         except sensors.SensorsError as error:
                             self.error('{0}: {1}'.format(sf.name, error))
                             continue
-                    if not vals or vals[0] == 0:
+                    if not vals or (vals[0] == 0 and feature.type != 1):
                         continue
                     if TYPE_MAP[feature.type] == sensor:
                         # create chart

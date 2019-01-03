@@ -1,3 +1,6 @@
+# Secrets
+gcs-credentials.json
+
 .deps
 .libs
 .dirstamp
@@ -35,6 +38,7 @@ sha256sums.txt
 # netdata binaries
 netdata
 !netdata/
+upload/
 
 apps.plugin
 !apps.plugin/
@@ -45,12 +49,14 @@ freeipmi.plugin
 cgroup-network
 !cgroup-network/
 
-# netdata makeself archives
+# installation artifacts
+installer/.environment.sh
+packaging/installer/.environment.sh
 *.tar.*
 *.run
 
 # netdata makeself downloads
-makeself/tmp/
+packaging/makeself/tmp/
 
 # coverity
 cov-int/
@@ -98,7 +104,6 @@ collectors/fping.plugin/fping.plugin
 
 # installer generated files
 netdata-uninstaller.sh
-netdata-updater.sh
 
 # cmake files
 cmake-build-debug/

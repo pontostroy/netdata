@@ -268,7 +268,7 @@ CHARTS = {
         'algo': INCREMENTAL,
     },
     'reserved_block_count': {
-        'options': [None, 'Reserved Block Count', '%', 'wear', 'smartd_log.reserved_block_count', 'line'],
+        'options': [None, 'Reserved Block Count', 'percentage', 'wear', 'smartd_log.reserved_block_count', 'line'],
         'lines': [],
         'attrs': [ATTR170],
         'algo': ABSOLUTE,
@@ -321,7 +321,7 @@ CHARTS = {
 
     },
     'percent_lifetime_used': {
-        'options': [None, 'Percent Lifetime Used', '%', 'wear', 'smartd_log.percent_lifetime_used', 'line'],
+        'options': [None, 'Percent Lifetime Used', 'percentage', 'wear', 'smartd_log.percent_lifetime_used', 'line'],
         'lines': [],
         'attrs': [ATTR202],
         'algo': ABSOLUTE,
@@ -453,6 +453,11 @@ class Ata190(BaseAtaSmartAttribute):
         return 100 - int(self.normalized_value)
 
 
+class Ata194(BaseAtaSmartAttribute):
+    def value(self):
+        return min(int(self.normalized_value), int(self.raw_value))
+
+
 class BaseSCSISmartAttribute:
     def __init__(self, name, raw_value):
         self.name = name
@@ -474,10 +479,11 @@ def ata_attribute_factory(value):
         return Ata9(*value)
     elif name == ATTR190:
         return Ata190(*value)
+    elif name == ATTR194:
+        return Ata194(*value)
     elif name in [
         ATTR1,
         ATTR7,
-        ATTR194,
         ATTR202,
         ATTR206,
     ]:
@@ -580,11 +586,9 @@ class Service(SimpleService):
         SimpleService.__init__(self, configuration=configuration, name=name)
         self.order = ORDER
         self.definitions = deepcopy(CHARTS)
-
         self.log_path = configuration.get('log_path', DEF_PATH)
         self.age = configuration.get('age', DEF_AGE)
         self.exclude = configuration.get('exclude_disks', str()).split()
-
         self.disks = list()
         self.runs = 0
 
@@ -646,6 +650,10 @@ class Service(SimpleService):
         return len(self.disks)
 
     def create_disk_from_file(self, full_name,  current_time):
+        if not full_name.endswith(CSV):
+            self.debug('skipping {0}: not a csv file'.format(full_name))
+            return None
+
         name = os.path.basename(full_name).split('.')[-3]
         path = os.path.join(self.log_path, full_name)
 
@@ -653,10 +661,6 @@ class Service(SimpleService):
             return None
 
         if [p for p in self.exclude if p in name]:
-            return None
-
-        if not full_name.endswith(CSV):
-            self.debug('skipping {0}: not a csv file'.format(full_name))
             return None
 
         if not os.access(path, os.R_OK):

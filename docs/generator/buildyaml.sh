@@ -42,19 +42,34 @@ navpart() {
 	done
 }
 
-echo -e 'site_name: NetData Documentation
+echo -e 'site_name: Netdata Documentation
 repo_url: https://github.com/netdata/netdata
 repo_name: GitHub
 edit_uri: blob/master
-site_description: NetData Documentation
-copyright: NetData, 2018
+site_description: Netdata Documentation
+copyright: Netdata, 2018
 docs_dir: src
 site_dir: build
 #use_directory_urls: false
 strict: true
+extra:
+  social:
+    - type: "github"
+      link: "https://github.com/netdata/netdata"
+    - type: "twitter"
+      link: "https://twitter.com/linuxnetdata"
+    - type: "facebook"
+      link: "https://www.facebook.com/linuxnetdata/"
 theme:
     name: "material"
-    custom_dir: themes/material
+    custom_dir: custom/themes/material
+    favicon: custom/img/favicon.ico
+extra_css:
+  - "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css"
+  - "custom/css/netdata.css"
+extra_javascript:
+  - "custom/javascripts/cookie-consent.js"
+  - "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"
 markdown_extensions:
  - extra
  - abbr
@@ -108,23 +123,19 @@ echo -ne "    - 'docs/Why-Netdata.md'
     - 'docs/a-github-star-is-important.md'
     - REDISTRIBUTED.md
     - CHANGELOG.md
+    - CONTRIBUTING.md
+- Installation:
+    - 'packaging/installer/README.md'
+    - 'packaging/docker/README.md'
+    - 'packaging/installer/UPDATE.md'
+    - 'packaging/installer/UNINSTALL.md'
+- 'docs/GettingStarted.md'
+- Running netdata:
+    - 'daemon/README.md'
+    - 'docs/configuration-guide.md'
+    - 'daemon/config/README.md'
+    - 'docs/Charts.md'
 "
-
-echo -ne "- Installation:
-    - 'installer/README.md'
-    - 'docker/README.md'
-    - 'installer/UPDATE.md'
-    - 'installer/UNINSTALL.md'
-"
-
-echo -ne "- 'docs/GettingStarted.md'
-"
-
-echo -ne "- Running netdata:
-"
-navpart 2 daemon
-navpart 2 daemon/config
-
 navpart 2 web/server "" "Web server"
 navpart 3 web/server "" "" 2 excludefirstlevel
 echo -ne "        - Running behind another web server:
@@ -146,6 +157,7 @@ navpart 1 collectors "" "Data collection" 1
 echo -ne "    - 'docs/Add-more-charts-to-netdata.md'
     - Internal plugins:
 "
+navpart 3 collectors/apps.plugin
 navpart 3 collectors/proc.plugin
 navpart 3 collectors/statsd.plugin
 navpart 3 collectors/cgroups.plugin
@@ -160,8 +172,8 @@ navpart 3 collectors/macos.plugin
 navpart 2 collectors/plugins.d "" "External plugins"
 navpart 3 collectors/python.d.plugin "" "Python modules" 3
 navpart 3 collectors/node.d.plugin "" "Node.js modules" 3
-navpart 3 collectors/charts.d.plugin "" "BASH modules" 3
-echo -ne "            - 'collectors/charts.d.plugin/README.md'
+echo -ne "        - BASH modules:
+            - 'collectors/charts.d.plugin/README.md'
             - 'collectors/charts.d.plugin/ap/README.md'
             - 'collectors/charts.d.plugin/apcupsd/README.md'
             - 'collectors/charts.d.plugin/example/README.md'
@@ -210,13 +222,11 @@ navpart 2 web/api/health "" "" 2
 navpart 2 web/api/queries "" "Queries" 2
 
 echo -ne "- Hacking netdata:
-    - CONTRIBUTING.md
     - CODE_OF_CONDUCT.md
     - 'docs/Netdata-Security-and-Disclosure-Information.md'
     - CONTRIBUTORS.md
 "
 navpart 2 makeself "" "" 4
-navpart 2 packaging "" "" 4
 navpart 2 libnetdata "" "libnetdata" 4
 navpart 2 contrib
 navpart 2 tests

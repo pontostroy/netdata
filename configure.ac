@@ -5,19 +5,15 @@
 AC_PREREQ(2.60)
 
 define([VERSION_MAJOR], [1])
-define([VERSION_MINOR], [11])
+define([VERSION_MINOR], [12])
 define([VERSION_FIX], [1])
 define([VERSION_NUMBER], VERSION_MAJOR[.]VERSION_MINOR[.]VERSION_FIX)
-define([VERSION_SUFFIX], [_rolling])
-
-dnl Set to "1" for a first RPM release of a new version
-PACKAGE_RPM_RELEASE="0.0.$(echo VERSION_SUFFIX | sed s/^_//)"
 
 # We do not use m4_esyscmd_s to support older autoconf.
 define([VERSION_STRING], m4_esyscmd(git describe 2>/dev/null | sed 's/^v//' | tr -d '\n'))
 m4_ifval(VERSION_STRING, [], [define([VERSION_STRING], VERSION_NUMBER)])
 
-AC_INIT([netdata], VERSION_STRING[]VERSION_SUFFIX)
+AC_INIT([netdata], VERSION_STRING[])
 
 AM_MAINTAINER_MODE([disable])
 if test x"$USE_MAINTAINER_MODE" = xyes; then
@@ -27,8 +23,6 @@ fi
 
 PACKAGE_RPM_VERSION="VERSION_NUMBER"
 AC_SUBST([PACKAGE_RPM_VERSION])
-AC_SUBST([PACKAGE_RPM_RELEASE])
-
 
 # -----------------------------------------------------------------------------
 # autoconf initialization
@@ -572,7 +566,6 @@ AC_CONFIG_FILES([
     collectors/python.d.plugin/Makefile
     collectors/statsd.plugin/Makefile
     collectors/tc.plugin/Makefile
-    contrib/Makefile
     daemon/Makefile
     database/Makefile
     diagrams/Makefile
@@ -596,7 +589,6 @@ AC_CONFIG_FILES([
     libnetdata/storage_number/Makefile
     libnetdata/threads/Makefile
     libnetdata/url/Makefile
-    makeself/Makefile
     registry/Makefile
     streaming/Makefile
     system/Makefile

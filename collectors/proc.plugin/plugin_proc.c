@@ -49,6 +49,7 @@ static struct proc_module {
 
         // disk metrics
         { .name = "/proc/diskstats", .dim = "diskstats", .func = do_proc_diskstats },
+        { .name = "/proc/mdstat", .dim = "mdstat", .func = do_proc_mdstat },
 
         // NFS metrics
         { .name = "/proc/net/rpc/nfsd", .dim = "nfsd", .func = do_proc_net_rpc_nfsd },
@@ -62,6 +63,9 @@ static struct proc_module {
 
         // IPC metrics
         { .name = "ipc", .dim = "ipc", .func = do_ipc },
+
+        // linux power supply metrics
+        { .name = "/sys/class/power_supply", .dim = "power_supply", .func = do_sys_class_power_supply },
 
         // the terminator of this array
         { .name = NULL, .dim = NULL, .func = NULL }

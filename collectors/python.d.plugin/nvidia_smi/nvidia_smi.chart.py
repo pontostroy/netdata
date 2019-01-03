@@ -15,6 +15,8 @@ disabled_by_default = True
 
 NVIDIA_SMI = 'nvidia-smi'
 
+BAD_VALUE = 'N/A'
+
 EMPTY_ROW = ''
 EMPTY_ROW_LIMIT = 500
 POLLER_BREAK_ROW = '</nvidia_smi_log>'
@@ -47,39 +49,39 @@ def gpu_charts(gpu):
 
     charts = {
         PCI_BANDWIDTH: {
-            'options': [None, 'PCI Express Bandwidth Utilization', 'KB/s', fam, 'nvidia_smi.pci_bandwidth', 'area'],
+            'options': [None, 'PCI Express Bandwidth Utilization', 'KiB/s', fam, 'nvidia_smi.pci_bandwidth', 'area'],
             'lines': [
                 ['rx_util', 'rx', 'absolute', 1, 1],
                 ['tx_util', 'tx', 'absolute', 1, -1],
             ]
         },
         FAN_SPEED: {
-            'options': [None, 'Fan Speed', '%', fam, 'nvidia_smi.fan_speed', 'line'],
+            'options': [None, 'Fan Speed', 'percentage', fam, 'nvidia_smi.fan_speed', 'line'],
             'lines': [
                 ['fan_speed', 'speed'],
             ]
         },
         GPU_UTIL: {
-            'options': [None, 'GPU Utilization', '%', fam, 'nvidia_smi.gpu_utilization', 'line'],
+            'options': [None, 'GPU Utilization', 'percentage', fam, 'nvidia_smi.gpu_utilization', 'line'],
             'lines': [
                 ['gpu_util', 'utilization'],
             ]
         },
         MEM_UTIL: {
-            'options': [None, 'Memory Bandwidth Utilization', '%', fam, 'nvidia_smi.mem_utilization', 'line'],
+            'options': [None, 'Memory Bandwidth Utilization', 'percentage', fam, 'nvidia_smi.mem_utilization', 'line'],
             'lines': [
                 ['memory_util', 'utilization'],
             ]
         },
         ENCODER_UTIL: {
-            'options': [None, 'Encoder/Decoder Utilization', '%', fam, 'nvidia_smi.encoder_utilization', 'line'],
+            'options': [None, 'Encoder/Decoder Utilization', 'percentage', fam, 'nvidia_smi.encoder_utilization', 'line'],
             'lines': [
                 ['encoder_util', 'encoder'],
                 ['decoder_util', 'decoder'],
             ]
         },
         MEM_ALLOCATED: {
-            'options': [None, 'Memory Allocated', 'MB', fam, 'nvidia_smi.memory_allocated', 'line'],
+            'options': [None, 'Memory Allocated', 'MiB', fam, 'nvidia_smi.memory_allocated', 'line'],
             'lines': [
                 ['fb_memory_usage', 'used'],
             ]
@@ -206,6 +208,15 @@ def handle_attr_error(method):
     return on_call
 
 
+def handle_value_error(method):
+    def on_call(*args, **kwargs):
+        try:
+            return method(*args, **kwargs)
+        except ValueError:
+            return None
+    return on_call
+
+
 class GPU:
     def __init__(self, num, root):
         self.num = num
@@ -272,6 +283,7 @@ class GPU:
     def mem_clock(self):
         return self.root.find('clocks').find('mem_clock').text.split()[0]
 
+    @handle_value_error
     @handle_attr_error
     def power_draw(self):
         return float(self.root.find('power_readings').find('power_draw').text.split()[0]) * 100
@@ -294,7 +306,9 @@ class GPU:
             'power_draw': self.power_draw(),
         }
 
-        return dict(('gpu{0}_{1}'.format(self.num, k), v) for k, v in data.items() if v is not None)
+        return dict(
+            ('gpu{0}_{1}'.format(self.num, k), v) for k, v in data.items() if v is not None and v != BAD_VALUE
+        )
 
 
 class Service(SimpleService):
@@ -302,7 +316,6 @@ class Service(SimpleService):
         super(Service, self).__init__(configuration=configuration, name=name)
         self.order = list()
         self.definitions = dict()
-
         poll = int(configuration.get('poll_seconds', 1))
         self.poller = NvidiaSMIPoller(poll)
 

@@ -32,7 +32,7 @@ Linux exposes resource usage reporting and provides dynamic configuration for cg
 	path to /sys/fs/cgroup/blkio = /sys/fs/cgroup/blkio
 	path to /sys/fs/cgroup/memory = /sys/fs/cgroup/memory
 	path to /sys/fs/cgroup/devices = /sys/fs/cgroup/devices
-``` 
+```
 
 netdata rescans these directories for added or removed cgroups every `check for new cgroups every` seconds.
 
@@ -51,7 +51,7 @@ To provide a sane default for this setting, netdata uses the following pattern l
 
 ```
 [plugin:cgroups]
-	search for cgroups in subpaths matching =  !*/init.scope  !*-qemu  !/init.scope  !/system  !/systemd  !/user  !/user.slice  * 
+	search for cgroups in subpaths matching =  !*/init.scope  !*-qemu  !/init.scope  !/system  !/systemd  !/user  !/user.slice  *
 ```
 
 So, we disable checking for **child cgroups** in systemd internal cgroups ([systemd services are monitored by netdata](#monitoring-systemd-services)), user cgroups (normally used for desktop and remote user sessions), qemu virtual machines (child cgroups of virtual machines) and `init.scope`. All others are enabled.
@@ -70,7 +70,7 @@ To provide a sane default, netdata uses the following pattern list (it checks th
 
 ```
 [plugin:cgroups]
-	enable by default cgroups matching =  !*/init.scope  *.scope  !*/vcpu*  !*/emulator  !*.mount  !*.partition  !*.service  !*.slice  !*.swap  !*.user  !/  !/docker  !/libvirt  !/lxc  !/lxc/*/ns  !/lxc/*/ns/*  !/machine  !/qemu  !/system  !/systemd  !/user  * 
+	enable by default cgroups matching =  !*/init.scope  *.scope  !*/vcpu*  !*/emulator  !*.mount  !*.partition  !*.service  !*.slice  !*.swap  !*.user  !/  !/docker  !/libvirt  !/lxc  !/lxc/*/ns  !/lxc/*/ns/*  !/machine  !/qemu  !/system  !/systemd  !/user  *
 ```
 
 The above provides the default `yes` or `no` setting for the cgroup. However, there is an additional step. In many cases the cgroups found in the `/sys/fs/cgroup` hierarchy are just random numbers and in many cases these numbers are ephemeral: they change across reboots or sessions.
@@ -158,6 +158,13 @@ cgroup_enable=memory swapaccount=1
 
 You can add the above, directly at the `linux` line in your `/boot/grub/grub.cfg` or appending them to the `GRUB_CMDLINE_LINUX` in `/etc/default/grub` (in which case you will have to run `update-grub` before rebooting). On DigitalOcean debian images you may have to set it at `/etc/default/grub.d/50-cloudimg-settings.cfg`.
 
+Which systemd services are monitored by netdata is determined by the following pattern list:
+
+```
+[plugin:cgroups]
+	cgroups to match as systemd services =  !/system.slice/*/*.service  /system.slice/*.service
+```
+
 ---
 
 ## Monitoring ephemeral containers
@@ -185,3 +192,5 @@ So, when a network interface or container stops, netdata might log a few errors 
 6. obsolete charts will be removed from memory, 1 hour after the last user viewed them (configurable with `[global].cleanup obsolete charts after seconds = 3600` (at netdata.conf).
 7. when obsolete charts are removed from memory they are also deleted from disk (configurable with `[global].delete obsolete charts files = yes`)
 
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Fcollectors%2Fcgroups.plugin%2FREADME&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()

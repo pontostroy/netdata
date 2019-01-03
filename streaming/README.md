@@ -18,8 +18,9 @@ a netdata performs:
 Local netdata (`slave`), **without any database or alarms**, collects metrics and sends them to
 another netdata (`master`).
 
-The user can take the full functionality of the `slave` netdata at
-http://master.ip:19999/host/slave.hostname/. Alarms for the `slave` are served by the `master`.
+The `my-netdata` menu shows a list of all "databases streamed to" the master. Clicking one of those links allows the user to view the full dashboard of the `slave` netdata. The URL has the form http://master-host:master-port/host/slave-host/. 
+
+Alarms for the `slave` are served by the `master`.
 
 In this mode the `slave` is just a plain data collector.
 It runs with... **5MB** of RAM (yes, you read correct), spawns all external plugins, but instead
@@ -33,8 +34,8 @@ The same `master` can collect data for any number of `slaves`.
 Local netdata (`slave`), **with a local database (and possibly alarms)**, collects metrics and
 sends them to another netdata (`master`).
 
-The user can use all the functions **at both** http://slave.ip:19999/ and
-http://master.ip:19999/host/slave.hostname/.
+The user can use all the functions **at both** http://slave-ip:slave-port/ and
+http://master-host:master-port/host/slave-host/.
 
 The `slave` and the `master` may have different data retention policies for the same metrics.
 
@@ -82,10 +83,13 @@ monitoring (there cannot be health monitoring without a database).
 ```
 [web]
     mode = none | static-threaded | single-threaded | multi-threaded
+    accept a streaming request every seconds = 0 
 ```
 
 `[web].mode = none` disables the API (netdata will not listen to any ports).
 This also disables the registry (there cannot be a registry without an API).
+
+`accept a streaming request every seconds` can be used to set a limit on how often a master Netdata server will accept streaming requests from the slaves. 0 sets no limit, 1 means maximum once every second. If this is set, you may see error log entries "... too busy to accept new streaming request. Will be allowed in X secs". 
 
 ```
 [backend]
@@ -410,3 +414,5 @@ The sending side of a netdata proxy, connects and disconnects to the final desti
 metrics, following the same pattern of the receiving side.
 
 For a practical example see [Monitoring ephemeral nodes](#monitoring-ephemeral-nodes).
+
+[![analytics](https://www.google-analytics.com/collect?v=1&aip=1&t=pageview&_s=1&ds=github&dr=https%3A%2F%2Fgithub.com%2Fnetdata%2Fnetdata&dl=https%3A%2F%2Fmy-netdata.io%2Fgithub%2Fstreaming%2FREADME&_u=MAC~&cid=5792dfd7-8dc4-476b-af31-da2fdb9f93d2&tid=UA-64295674-3)]()
