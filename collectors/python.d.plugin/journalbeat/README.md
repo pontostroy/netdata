@@ -9,7 +9,6 @@ priority     : 60000
 
 local:
   url     : 'http://localhost:5066/stats'
-  retries : 10
 ```
 
 Without configuration, module attempts to connect to `http://localhost:5066/stats`.
