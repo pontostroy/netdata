@@ -1704,6 +1704,8 @@ NETDATA.timeout = {
 };
 
 NETDATA.timeout.init();
+// Codacy declarations
+/* global netdataTheme */
 
 NETDATA.themes = {
     white: {
@@ -1795,6 +1797,10 @@ NETDATA.colors = NETDATA.themes.current.colors;
 //                         (blue)     (red)      (orange)   (green)    (pink)     (brown)    (purple)   (yellow)   (gray)
 //NETDATA.colors        = [ '#5DA5DA', '#F15854', '#FAA43A', '#60BD68', '#F17CB0', '#B2912F', '#B276B2', '#DECF3F', '#4D4D4D' ];
 // dygraph
+
+// Codacy declarations
+/* global smoothPlotter */
+/* global Dygraph */
 
 NETDATA.dygraph = {
     smooth: false
@@ -2923,6 +2929,9 @@ NETDATA.sparklineChartCreate = function (state, data) {
     return true;
 };
 // google charts
+
+// Codacy declarations
+/* global google */
 
 NETDATA.googleInitialize = function (callback) {
     if (typeof netdataNoGoogleCharts === 'undefined' || !netdataNoGoogleCharts) {
@@ -4980,6 +4989,10 @@ NETDATA.commonColors = {
 
 // *** src/dashboard.js/main.js
 
+// Codacy declarations
+/* global clipboard */
+/* global Ps */
+
 if (NETDATA.options.debug.main_loop) {
     console.log('welcome to NETDATA');
 }
@@ -6247,6 +6260,55 @@ let chartState = function (element) {
         this.tm.last_dom_created = 0;
     };
 
+    const maxMessageFontSize = () => {
+        let screenHeight = screen.height;
+        let el = this.element;
+
+        // normally we want a font size, as tall as the element
+        let h = el.clientHeight;
+
+        // but give it some air, 20% let's say, or 5 pixels min
+        let lost = Math.max(h * 0.2, 5);
+        h -= lost;
+
+        // center the text, vertically
+        let paddingTop = (lost - 5) / 2;
+
+        // but check the width too
+        // it should fit 10 characters in it
+        let w = el.clientWidth / 10;
+        if (h > w) {
+            paddingTop += (h - w) / 2;
+            h = w;
+        }
+
+        // and don't make it too huge
+        // 5% of the screen size is good
+        if (h > screenHeight / 20) {
+            paddingTop += (h - (screenHeight / 20)) / 2;
+            h = screenHeight / 20;
+        }
+
+        // set it
+        this.element_message.style.fontSize = h.toString() + 'px';
+        this.element_message.style.paddingTop = paddingTop.toString() + 'px';
+    };
+
+    const showMessageIcon = (icon) => {
+        this.element_message.innerHTML = icon;
+        maxMessageFontSize();
+        $(this.element_message).removeClass('hidden');
+        this.tmp.___messageHidden___ = undefined;
+    };
+
+    const showLoading = () => {
+        if (!this.chart_created) {
+            showMessageIcon(NETDATA.icons.loading + ' netdata');
+            return true;
+        }
+        return false;
+    };
+
     let createDOM = () => {
         if (!this.enabled) {
             return;
@@ -6320,47 +6382,6 @@ let chartState = function (element) {
         }
     };
 
-    const maxMessageFontSize = () => {
-        let screenHeight = screen.height;
-        let el = this.element;
-
-        // normally we want a font size, as tall as the element
-        let h = el.clientHeight;
-
-        // but give it some air, 20% let's say, or 5 pixels min
-        let lost = Math.max(h * 0.2, 5);
-        h -= lost;
-
-        // center the text, vertically
-        let paddingTop = (lost - 5) / 2;
-
-        // but check the width too
-        // it should fit 10 characters in it
-        let w = el.clientWidth / 10;
-        if (h > w) {
-            paddingTop += (h - w) / 2;
-            h = w;
-        }
-
-        // and don't make it too huge
-        // 5% of the screen size is good
-        if (h > screenHeight / 20) {
-            paddingTop += (h - (screenHeight / 20)) / 2;
-            h = screenHeight / 20;
-        }
-
-        // set it
-        this.element_message.style.fontSize = h.toString() + 'px';
-        this.element_message.style.paddingTop = paddingTop.toString() + 'px';
-    };
-
-    const showMessageIcon = (icon) => {
-        this.element_message.innerHTML = icon;
-        maxMessageFontSize();
-        $(this.element_message).removeClass('hidden');
-        this.tmp.___messageHidden___ = undefined;
-    };
-
     const hideMessage = () => {
         if (typeof this.tmp.___messageHidden___ === 'undefined') {
             this.tmp.___messageHidden___ = true;
@@ -6382,14 +6403,6 @@ let chartState = function (element) {
         }
 
         showMessageIcon(icon + ' netdata' + invisibleSearchableText());
-    };
-
-    const showLoading = () => {
-        if (!this.chart_created) {
-            showMessageIcon(NETDATA.icons.loading + ' netdata');
-            return true;
-        }
-        return false;
     };
 
     const isHidden = () => {
@@ -8819,7 +8832,7 @@ NETDATA.resetAllCharts = function (state) {
     // if (NETDATA.globalPanAndZoom.isMaster(state) === false) {
     //     master = false;
     // }
-    const master = NETDATA.globalPanAndZoom.isMaster(state)
+    const master = NETDATA.globalPanAndZoom.isMaster(state);
 
     // clear the global Pan and Zoom
     // this will also refresh the master
@@ -9749,7 +9762,7 @@ NETDATA.registry = {
         NETDATA.registry.hello(NETDATA.serverDefault, function (data) {
             if (data) {
                 NETDATA.registry.server = data.registry;
-                if (data.cloud_base_url != "") {
+                if (data.cloud_base_url !== "") {
                     NETDATA.registry.isCloudEnabled = true;
                     NETDATA.registry.cloudBaseURL = data.cloud_base_url;
                 } else {

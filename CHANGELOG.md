@@ -4,7 +4,40 @@
 
 **Fixed bugs:**
 
+- Missing build deps for automake and autoconf from the spec file [\#5362](https://github.com/netdata/netdata/issues/5362)
+- wget command that dowlonad go.d plugin creates lots of output in headless install [\#5356](https://github.com/netdata/netdata/issues/5356)
+- Update checker false positive [\#5352](https://github.com/netdata/netdata/issues/5352)
 - cups.plugin fails to be compiled [\#5324](https://github.com/netdata/netdata/issues/5324)
+- Codacy is unconfigured [\#5320](https://github.com/netdata/netdata/issues/5320)
+- netdata-installer.sh fails to detect netdata is restarted [\#5304](https://github.com/netdata/netdata/issues/5304)
+
+**Closed issues:**
+
+- Alert alarm flapping [\#5346](https://github.com/netdata/netdata/issues/5346)
+- move node.js module named to go.d [\#5048](https://github.com/netdata/netdata/issues/5048)
+- Fluentd monitoring [\#4847](https://github.com/netdata/netdata/issues/4847)
+- Feature request: ability to process detailed `ipcs -q` output [\#1890](https://github.com/netdata/netdata/issues/1890)
+
+**Merged pull requests:**
+
+- Added missing BuildRequires for autoconf, automake [\#5363](https://github.com/netdata/netdata/pull/5363) ([johnhomelan](https://github.com/johnhomelan))
+- fix: wget log spam in headless mode \(fixes \#5356\) [\#5359](https://github.com/netdata/netdata/pull/5359) ([mkg20001](https://github.com/mkg20001))
+- Fix replacement of whitespace for versions retrieved from github [\#5355](https://github.com/netdata/netdata/pull/5355) ([cakrit](https://github.com/cakrit))
+- fix warning condition for mem.available [\#5353](https://github.com/netdata/netdata/pull/5353) ([cakrit](https://github.com/cakrit))
+- cups.plugin: Support older versions [\#5350](https://github.com/netdata/netdata/pull/5350) ([simonnagl](https://github.com/simonnagl))
+- fix AC\_CHECK\_LIB to work correctly with cups library [\#5349](https://github.com/netdata/netdata/pull/5349) ([mfundul](https://github.com/mfundul))
+- Add link to writing a new module in example readme [\#5348](https://github.com/netdata/netdata/pull/5348) ([cakrit](https://github.com/cakrit))
+- Provide more precise uninstall instructions [\#5347](https://github.com/netdata/netdata/pull/5347) ([cakrit](https://github.com/cakrit))
+- Fix cgroups Codacy issue [\#5340](https://github.com/netdata/netdata/pull/5340) ([vlvkobal](https://github.com/vlvkobal))
+- Fix FreeBSD plugin Codacy issues [\#5338](https://github.com/netdata/netdata/pull/5338) ([vlvkobal](https://github.com/vlvkobal))
+- Add go.d documentation [\#5215](https://github.com/netdata/netdata/pull/5215) ([cakrit](https://github.com/cakrit))
+- Add cgroup cpu and memory limits and alarms [\#5172](https://github.com/netdata/netdata/pull/5172) ([vlvkobal](https://github.com/vlvkobal))
+- Add message queue statistics [\#5115](https://github.com/netdata/netdata/pull/5115) ([vlvkobal](https://github.com/vlvkobal))
+
+## [v1.12.0](https://github.com/netdata/netdata/tree/v1.12.0) (2019-02-06)
+
+**Fixed bugs:**
+
 - Slack alert displaying URL after manual update of net-data [\#5301](https://github.com/netdata/netdata/issues/5301)
 - Netdata update in a /tmp hardened system [\#5289](https://github.com/netdata/netdata/issues/5289)
 - Certificate error while running netdata kickstart script [\#5273](https://github.com/netdata/netdata/issues/5273)
@@ -24,11 +57,13 @@
 - python.d/dockerd plugin update error [\#5200](https://github.com/netdata/netdata/issues/5200)
 - Netdata registry with basic auth \(behind nginx proxy\) results in error 409 [\#5180](https://github.com/netdata/netdata/issues/5180)
 - alarm-notify.sh: WARNING: Cannot find file [\#5136](https://github.com/netdata/netdata/issues/5136)
+- Netdata w/ Docker Container not show Disk space utilization for mounts [\#5071](https://github.com/netdata/netdata/issues/5071)
 - zfs charts appear, even when they are zero [\#4115](https://github.com/netdata/netdata/issues/4115)
 - Ceph - No JSON object could be decoded [\#3563](https://github.com/netdata/netdata/issues/3563)
 
 **Closed issues:**
 
+- integrate go-orchestrator into go.d.plugin [\#5308](https://github.com/netdata/netdata/issues/5308)
 - Update not working or UI just showing wrong information? How to uninstall? [\#5285](https://github.com/netdata/netdata/issues/5285)
 - Slack Notifications Ignored by alarm-notify.sh [\#5267](https://github.com/netdata/netdata/issues/5267)
 - varnish plugin doesn't support custom varnishd working directory [\#5262](https://github.com/netdata/netdata/issues/5262)
@@ -43,6 +78,12 @@
 
 **Merged pull requests:**
 
+- Fix Codacy issues for FreeBSD plugin [\#5334](https://github.com/netdata/netdata/pull/5334) ([vlvkobal](https://github.com/vlvkobal))
+- portcheck: remove unused var [\#5332](https://github.com/netdata/netdata/pull/5332) ([ilyam8](https://github.com/ilyam8))
+- fix some python codacy errors [\#5331](https://github.com/netdata/netdata/pull/5331) ([ilyam8](https://github.com/ilyam8))
+- Remove codacy warnings from sma\_webbox [\#5330](https://github.com/netdata/netdata/pull/5330) ([cakrit](https://github.com/cakrit))
+- Allow user to override the default behavior for read-only mounts [\#5327](https://github.com/netdata/netdata/pull/5327) ([vlvkobal](https://github.com/vlvkobal))
+- Remove deprecated API call [\#5326](https://github.com/netdata/netdata/pull/5326) ([Aisbergg](https://github.com/Aisbergg))
 - fix compilation of cups.plugin; fixes \#5324 [\#5325](https://github.com/netdata/netdata/pull/5325) ([ktsaou](https://github.com/ktsaou))
 - Clarify that uninstaller.sh needs to be downloaded [\#5315](https://github.com/netdata/netdata/pull/5315) ([cakrit](https://github.com/cakrit))
 - Remove registrypath from alarm-notify [\#5302](https://github.com/netdata/netdata/pull/5302) ([cakrit](https://github.com/cakrit))
