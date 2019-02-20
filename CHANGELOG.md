@@ -4,7 +4,11 @@
 
 **Fixed bugs:**
 
+- sensors plugin only plots sensors that have hard-coded limits [\#5402](https://github.com/netdata/netdata/issues/5402)
+- kickstart-static64.sh should be looking in GCS for the binary package [\#5390](https://github.com/netdata/netdata/issues/5390)
+- Docker container networking [\#5383](https://github.com/netdata/netdata/issues/5383)
 - Race condition in UI may result in streamed hosts not showing when not signed in [\#5370](https://github.com/netdata/netdata/issues/5370)
+- clock\_gettime\(7, &timespec\) failed. \(errno 22, Invalid argument\) [\#5367](https://github.com/netdata/netdata/issues/5367)
 - Missing build deps for automake and autoconf from the spec file [\#5362](https://github.com/netdata/netdata/issues/5362)
 - wget command that dowlonad go.d plugin creates lots of output in headless install [\#5356](https://github.com/netdata/netdata/issues/5356)
 - Update checker false positive [\#5352](https://github.com/netdata/netdata/issues/5352)
@@ -27,8 +31,17 @@
 
 **Merged pull requests:**
 
+- spec: fixed template issue for netdata source. [\#5427](https://github.com/netdata/netdata/pull/5427) ([k0ste](https://github.com/k0ste))
+- Improve configure.ac mnl and netfilter\_acc checks for static builds [\#5424](https://github.com/netdata/netdata/pull/5424) ([mfundul](https://github.com/mfundul))
+- remove redudant pipes for cgroup-network netnsid [\#5417](https://github.com/netdata/netdata/pull/5417) ([ktsaou](https://github.com/ktsaou))
+- Fix clock\_gettime\(\) failures with the CLOCK\_BOOTTIME argument [\#5415](https://github.com/netdata/netdata/pull/5415) ([mfundul](https://github.com/mfundul))
+- Uninstall instruction improvements [\#5414](https://github.com/netdata/netdata/pull/5414) ([cakrit](https://github.com/cakrit))
+- use netnsid for detecting cgroup networks;  [\#5413](https://github.com/netdata/netdata/pull/5413) ([ktsaou](https://github.com/ktsaou))
+- python module sensors fix [\#5406](https://github.com/netdata/netdata/pull/5406) ([ilyam8](https://github.com/ilyam8))
+- Refactored static kickstart script [\#5397](https://github.com/netdata/netdata/pull/5397) ([paulfantom](https://github.com/paulfantom))
 - Fix ceph.chart.py for Python3 [\#5396](https://github.com/netdata/netdata/pull/5396) ([GaetanF](https://github.com/GaetanF))
 - Update CODEOWNERS [\#5389](https://github.com/netdata/netdata/pull/5389) ([cakrit](https://github.com/cakrit))
+- Add driver-type option to the freeipmi plugin [\#5384](https://github.com/netdata/netdata/pull/5384) ([cakrit](https://github.com/cakrit))
 - Add documentation for network interfaces [\#5381](https://github.com/netdata/netdata/pull/5381) ([vlvkobal](https://github.com/vlvkobal))
 - Correct Installation link in updating doc [\#5380](https://github.com/netdata/netdata/pull/5380) ([cakrit](https://github.com/cakrit))
 - Add support of tera-byte size for Linux bcache. [\#5373](https://github.com/netdata/netdata/pull/5373) ([kamcpp](https://github.com/kamcpp))
