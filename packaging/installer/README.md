@@ -16,6 +16,7 @@ The best way to install Netdata is directly from source. Our **automatic install
 6. [Install on pfSense](#pfsense)
 7. [Enable on FreeNAS Corral](#freenas)
 8. [Install on macOS (OS X)](#macos)
+9. [Install on a Kubernetes cluster](https://github.com/netdata/helmchart#netdata-helm-chart-for-kubernetes-deployments)
 
 See also the list of Netdata [package maintainers](../maintainers) for ASUSTOR NAS, OpenWRT, ReadyNAS, etc.
 
@@ -41,7 +42,7 @@ bash <(curl -Ss https://my-netdata.io/kickstart.sh)
 Verify the integrity of the script with this:
 
 ```bash
-[ "b66c99c065abe1cf104c11236d4e8747" = "$(curl -Ss https://my-netdata.io/kickstart.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
+[ "e051d1baed4c69653b5d3e4588696466" = "$(curl -Ss https://my-netdata.io/kickstart.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
 ```
 *It should print `OK, VALID` if the script is the one we ship.*
 
