@@ -4,26 +4,48 @@
 
 **Fixed bugs:**
 
+- Errant netdata-updater logs on root "/" directory [\#5679](https://github.com/netdata/netdata/issues/5679)
 - remove python obsolete modules [\#5647](https://github.com/netdata/netdata/issues/5647)
 - Reinstalling with kickstart.sh fails [\#5584](https://github.com/netdata/netdata/issues/5584)
 - .opt-out-from-anonymous-statistics still leaks referrer [\#5577](https://github.com/netdata/netdata/issues/5577)
+- Uninstaller fixes and instructions [\#5290](https://github.com/netdata/netdata/issues/5290)
 - Installer problem with config files under 'orig' symlink  [\#5039](https://github.com/netdata/netdata/issues/5039)
 
 **Closed issues:**
 
+- How to disable disk monitoring for specific drives, in particular automounted \(autofs\) network shares [\#5704](https://github.com/netdata/netdata/issues/5704)
+- feature cgroups plugin: make containers priority user configurable [\#5697](https://github.com/netdata/netdata/issues/5697)
+- push kickstart.sh to https://my-netdata.io/kickstart.sh [\#5681](https://github.com/netdata/netdata/issues/5681)
 - Slack footer link breaks when the URL is too long [\#5654](https://github.com/netdata/netdata/issues/5654)
 - netdata build error [\#5649](https://github.com/netdata/netdata/issues/5649)
 - feature: collect docker-engine metrics [\#5622](https://github.com/netdata/netdata/issues/5622)
+- /etc/cron.daily/netdata-updater -f $'\E\(B\E\[0m\\n' /dev/fd/63: line 86: : command not found [\#5570](https://github.com/netdata/netdata/issues/5570)
+- support gauges without a needle [\#4206](https://github.com/netdata/netdata/issues/4206)
+- notifications with smstools \(direct connection to mobile phone\) [\#2720](https://github.com/netdata/netdata/issues/2720)
+- remove not updated charts after some time [\#688](https://github.com/netdata/netdata/issues/688)
 
 **Merged pull requests:**
 
+- add 'containers priority' option to cgroups plugin [\#5700](https://github.com/netdata/netdata/pull/5700) ([ilyam8](https://github.com/ilyam8))
+- Remove temp log file if no update needed [\#5695](https://github.com/netdata/netdata/pull/5695) ([cakrit](https://github.com/cakrit))
+- add a description how to achieve vhost access logs with nginx in web\_log [\#5694](https://github.com/netdata/netdata/pull/5694) ([hsegnitz](https://github.com/hsegnitz))
+- netdata/packaging/docker/publish: Fix docker publishing [\#5692](https://github.com/netdata/netdata/pull/5692) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- netdata/packaging/docker: Fix build - typo on array iteration [\#5691](https://github.com/netdata/netdata/pull/5691) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- Integrity testing: Check published kickstart files integrity [\#5689](https://github.com/netdata/netdata/pull/5689) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- do not show the modal on demo sites [\#5686](https://github.com/netdata/netdata/pull/5686) ([ktsaou](https://github.com/ktsaou))
+- netdata/packaging/uninstaller: Update uninstall document [\#5678](https://github.com/netdata/netdata/pull/5678) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- fix incorrect use of isnormal\(\) [\#5677](https://github.com/netdata/netdata/pull/5677) ([ktsaou](https://github.com/ktsaou))
+- py stuff: change l2isbad to ilyam8 [\#5676](https://github.com/netdata/netdata/pull/5676) ([ilyam8](https://github.com/ilyam8))
+- bring uninstaller back [\#5675](https://github.com/netdata/netdata/pull/5675) ([paulfantom](https://github.com/paulfantom))
 - Fix py2-psycopg2 right after upgrade [\#5667](https://github.com/netdata/netdata/pull/5667) ([archisgore](https://github.com/archisgore))
+- Add SMS Server Tools 3 SMS notifications [\#5662](https://github.com/netdata/netdata/pull/5662) ([cakrit](https://github.com/cakrit))
 - Remove obsolete python modules [\#5659](https://github.com/netdata/netdata/pull/5659) ([ilyam8](https://github.com/ilyam8))
 - Fix path to pidfile in FreeBSD rc.d file [\#5657](https://github.com/netdata/netdata/pull/5657) ([honzahommer](https://github.com/honzahommer))
 - netdata/build: A small house keeping around coverity scan \(no functional  or process change\) [\#5656](https://github.com/netdata/netdata/pull/5656) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
 - Load gtm only if anonymous\_statistics are enabled [\#5651](https://github.com/netdata/netdata/pull/5651) ([cakrit](https://github.com/cakrit))
 - Fix slack notifications footer and set cloud redirect URL to http [\#5650](https://github.com/netdata/netdata/pull/5650) ([cakrit](https://github.com/cakrit))
 - x509check alarm fix [\#5645](https://github.com/netdata/netdata/pull/5645) ([ilyam8](https://github.com/ilyam8))
+- Split docker build script into build and publish - attempt small cleanups along the way [\#5591](https://github.com/netdata/netdata/pull/5591) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
 - fix command not found error when run script under root user. [\#5581](https://github.com/netdata/netdata/pull/5581) ([vinsia](https://github.com/vinsia))
 - Patch netdata-installer.sh to avoid unwanted errors during stock config cleanup [\#5571](https://github.com/netdata/netdata/pull/5571) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
 - Make sign-in functionality more visible [\#5569](https://github.com/netdata/netdata/pull/5569) ([gmosx](https://github.com/gmosx))
