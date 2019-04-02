@@ -4,6 +4,30 @@
 
 **Fixed bugs:**
 
+- netdata-installer.sh: sha256sum binaries do not exist in FreeBSD [\#5747](https://github.com/netdata/netdata/issues/5747)
+
+**Closed issues:**
+
+- feature: postgres module add connection via URI [\#5684](https://github.com/netdata/netdata/issues/5684)
+- Can I check monthly or daily reports or history [\#5287](https://github.com/netdata/netdata/issues/5287)
+
+**Merged pull requests:**
+
+- netdata/packaging/installer: fix sha256sum failure on freeBSD [\#5760](https://github.com/netdata/netdata/pull/5760) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- postgres module: connect via uri [\#5758](https://github.com/netdata/netdata/pull/5758) ([ilyam8](https://github.com/ilyam8))
+- libapache2-mod-proxy-html was a transitional package for apache2-bin [\#5753](https://github.com/netdata/netdata/pull/5753) ([piiiggg](https://github.com/piiiggg))
+- Fix the Polyverse reinstall that caused APK broken state [\#5751](https://github.com/netdata/netdata/pull/5751) ([archisgore](https://github.com/archisgore))
+- fix go.d.plugin config.tar.gz checksum [\#5750](https://github.com/netdata/netdata/pull/5750) ([ilyam8](https://github.com/ilyam8))
+- Correct typo in ceph README [\#5742](https://github.com/netdata/netdata/pull/5742) ([cakrit](https://github.com/cakrit))
+- Fix some misspells in docs and code [\#5549](https://github.com/netdata/netdata/pull/5549) ([JoeWrightss](https://github.com/JoeWrightss))
+- Added RocketChat default recipient for roles [\#5545](https://github.com/netdata/netdata/pull/5545) ([tctovsli](https://github.com/tctovsli))
+- Add simonnagl as CODEOWNER for cups.plugin [\#5453](https://github.com/netdata/netdata/pull/5453) ([simonnagl](https://github.com/simonnagl))
+
+## [v1.14.0-rc0](https://github.com/netdata/netdata/tree/v1.14.0-rc0) (2019-03-30)
+
+**Fixed bugs:**
+
+- NetData no longer installs after recent xenstat commit [\#5726](https://github.com/netdata/netdata/issues/5726)
 - Errant netdata-updater logs on root "/" directory [\#5679](https://github.com/netdata/netdata/issues/5679)
 - remove python obsolete modules [\#5647](https://github.com/netdata/netdata/issues/5647)
 - Reinstalling with kickstart.sh fails [\#5584](https://github.com/netdata/netdata/issues/5584)
@@ -13,19 +37,46 @@
 
 **Closed issues:**
 
-- How to disable disk monitoring for specific drives, in particular automounted \(autofs\) network shares [\#5704](https://github.com/netdata/netdata/issues/5704)
+- support AWS Timestream as a back-end [\#5722](https://github.com/netdata/netdata/issues/5722)
+- netdata/packaging/installer: Finish up netdata installer refactoring [\#5705](https://github.com/netdata/netdata/issues/5705)
+- Feature: Netdata alarms as POST events to a configurable endpoint in health\_alarm\_notify.conf [\#5702](https://github.com/netdata/netdata/issues/5702)
 - feature cgroups plugin: make containers priority user configurable [\#5697](https://github.com/netdata/netdata/issues/5697)
+- Basic kubeproxy collector [\#5683](https://github.com/netdata/netdata/issues/5683)
 - push kickstart.sh to https://my-netdata.io/kickstart.sh [\#5681](https://github.com/netdata/netdata/issues/5681)
 - Slack footer link breaks when the URL is too long [\#5654](https://github.com/netdata/netdata/issues/5654)
 - netdata build error [\#5649](https://github.com/netdata/netdata/issues/5649)
+- Scalable page cache, metrics index and space management [\#5640](https://github.com/netdata/netdata/issues/5640)
+- Basic kubelet collector [\#5639](https://github.com/netdata/netdata/issues/5639)
+- Kubernetes helmchart improvements [\#5637](https://github.com/netdata/netdata/issues/5637)
+- Isn't it a security risk not having SSL mode for postgres plugin? [\#5629](https://github.com/netdata/netdata/issues/5629)
 - feature: collect docker-engine metrics [\#5622](https://github.com/netdata/netdata/issues/5622)
+- nightlies.sh should stop on error [\#5580](https://github.com/netdata/netdata/issues/5580)
 - /etc/cron.daily/netdata-updater -f $'\E\(B\E\[0m\\n' /dev/fd/63: line 86: : command not found [\#5570](https://github.com/netdata/netdata/issues/5570)
+- NetData on XCP-ng dom0 CentOS [\#5357](https://github.com/netdata/netdata/issues/5357)
+- Kubelet monitoring [\#4859](https://github.com/netdata/netdata/issues/4859)
+- Docker Hub monitoring [\#4843](https://github.com/netdata/netdata/issues/4843)
+- fping 4.1 released [\#4227](https://github.com/netdata/netdata/issues/4227)
 - support gauges without a needle [\#4206](https://github.com/netdata/netdata/issues/4206)
+- RFC: a new design for alert system [\#3963](https://github.com/netdata/netdata/issues/3963)
 - notifications with smstools \(direct connection to mobile phone\) [\#2720](https://github.com/netdata/netdata/issues/2720)
 - remove not updated charts after some time [\#688](https://github.com/netdata/netdata/issues/688)
 
 **Merged pull requests:**
 
+- netdata/packaging/ci: small improvements in logging [\#5746](https://github.com/netdata/netdata/pull/5746) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- netdata/packaging/makeself: no comment [\#5743](https://github.com/netdata/netdata/pull/5743) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- installer: include go.d.plugin version v0.3.1 [\#5740](https://github.com/netdata/netdata/pull/5740) ([ilyam8](https://github.com/ilyam8))
+- access: fix codeowners [\#5739](https://github.com/netdata/netdata/pull/5739) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- netdata/packaging/installer: netdata-installer.sh script \(and subscripts\) refactoring wrap-up [\#5736](https://github.com/netdata/netdata/pull/5736) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- Spelling fix for streaming readme.md [\#5734](https://github.com/netdata/netdata/pull/5734) ([vinyasmusic](https://github.com/vinyasmusic))
+- Fix dist build [\#5728](https://github.com/netdata/netdata/pull/5728) ([vlvkobal](https://github.com/vlvkobal))
+- add some kubelet alarms [\#5724](https://github.com/netdata/netdata/pull/5724) ([ilyam8](https://github.com/ilyam8))
+- Update fping version [\#5719](https://github.com/netdata/netdata/pull/5719) ([vlvkobal](https://github.com/vlvkobal))
+- add some kubernetes to apps\_groups.conf [\#5714](https://github.com/netdata/netdata/pull/5714) ([ilyam8](https://github.com/ilyam8))
+- netdata/packaging/ci: nits [\#5709](https://github.com/netdata/netdata/pull/5709) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- netdata/packaging/ci: Make Travis CI more strict on nightlies run [\#5708](https://github.com/netdata/netdata/pull/5708) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- NEW: authdb option for MongoDB collector [\#5707](https://github.com/netdata/netdata/pull/5707) ([andvgal](https://github.com/andvgal))
+- Send custom docs [\#5703](https://github.com/netdata/netdata/pull/5703) ([cakrit](https://github.com/cakrit))
 - add 'containers priority' option to cgroups plugin [\#5700](https://github.com/netdata/netdata/pull/5700) ([ilyam8](https://github.com/ilyam8))
 - Remove temp log file if no update needed [\#5695](https://github.com/netdata/netdata/pull/5695) ([cakrit](https://github.com/cakrit))
 - add a description how to achieve vhost access logs with nginx in web\_log [\#5694](https://github.com/netdata/netdata/pull/5694) ([hsegnitz](https://github.com/hsegnitz))
@@ -39,6 +90,8 @@
 - bring uninstaller back [\#5675](https://github.com/netdata/netdata/pull/5675) ([paulfantom](https://github.com/paulfantom))
 - Fix py2-psycopg2 right after upgrade [\#5667](https://github.com/netdata/netdata/pull/5667) ([archisgore](https://github.com/archisgore))
 - Add SMS Server Tools 3 SMS notifications [\#5662](https://github.com/netdata/netdata/pull/5662) ([cakrit](https://github.com/cakrit))
+- postgres add ssl connection support [\#5661](https://github.com/netdata/netdata/pull/5661) ([ilyam8](https://github.com/ilyam8))
+- Add xenstat plugin [\#5660](https://github.com/netdata/netdata/pull/5660) ([vlvkobal](https://github.com/vlvkobal))
 - Remove obsolete python modules [\#5659](https://github.com/netdata/netdata/pull/5659) ([ilyam8](https://github.com/ilyam8))
 - Fix path to pidfile in FreeBSD rc.d file [\#5657](https://github.com/netdata/netdata/pull/5657) ([honzahommer](https://github.com/honzahommer))
 - netdata/build: A small house keeping around coverity scan \(no functional  or process change\) [\#5656](https://github.com/netdata/netdata/pull/5656) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
