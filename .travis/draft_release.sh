@@ -22,6 +22,15 @@ if [ ! -f .gitignore ]; then
 	exit 1
 fi
 
+echo "--- Initialize git configuration ---"
+export GIT_MAIL="bot@netdata.cloud"
+export GIT_USER="netdatabot"
+git config user.email "${GIT_MAIL}"
+git config user.name "${GIT_USER}"
+git checkout master
+git pull
+
+
 if [[ $(git describe) =~ -rc* ]]; then
 	echo "This is a release candidate tag, we do not generate a release draft"
 	exit 0
