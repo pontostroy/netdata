@@ -42,7 +42,7 @@ bash <(curl -Ss https://my-netdata.io/kickstart.sh)
 Verify the integrity of the script with this:
 
 ```bash
-[ "15c688e7228ebee83ace1811273cd089" = "$(curl -Ss https://my-netdata.io/kickstart.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
+[ "fe451cd039c8f99b2ba4ca0feab88033" = "$(curl -Ss https://my-netdata.io/kickstart.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
 ```
 *It should print `OK, VALID` if the script is the one we ship.*
 
@@ -99,7 +99,7 @@ To install Netdata with a binary package on any Linux distro, any kernel version
 Verify the integrity of the script with this:
 
 ```bash
-[ "97427a0fc5a52593b603c2ae887d4466" = "$(curl -Ss https://my-netdata.io/kickstart-static64.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
+[ "9ff4f5f37d23dff431f80d5349e0a25c" = "$(curl -Ss https://my-netdata.io/kickstart-static64.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
 ```
 
 *It should print `OK, VALID` if the script is the one we ship.*
@@ -191,13 +191,13 @@ This is how to do it by hand:
 
 ```sh
 # Debian / Ubuntu
-apt-get install zlib1g-dev uuid-dev libmnl-dev gcc make git autoconf autoconf-archive autogen automake pkg-config curl
+apt-get install zlib1g-dev uuid-dev libuv1-dev liblz4-dev libjudy-dev libssl-dev libmnl-dev gcc make git autoconf autoconf-archive autogen automake pkg-config curl
 
 # Fedora
-dnf install zlib-devel libuuid-devel libmnl-devel gcc make git autoconf autoconf-archive autogen automake pkgconfig curl findutils
+dnf install zlib-devel libuuid-devel libuv-devel lz4-devel Judy-devel openssl-devel libmnl-devel gcc make git autoconf autoconf-archive autogen automake pkgconfig curl findutils
 
 # CentOS / Red Hat Enterprise Linux
-yum install autoconf automake curl gcc git libmnl-devel libuuid-devel lm_sensors make MySQL-python nc pkgconfig python python-psycopg2 PyYAML zlib-devel
+yum install autoconf automake curl gcc git libmnl-devel libuuid-devel openssl-devel libuv-devel lz4-devel Judy-devel lm_sensors make MySQL-python nc pkgconfig python python-psycopg2 PyYAML zlib-devel
 
 ```
 
@@ -231,6 +231,17 @@ package|description
 `lm-sensors`|for monitoring **hardware sensors**
 `libmnl`|for collecting netfilter metrics
 `netcat`|for shell plugins to collect metrics from remote systems
+
+*Netdata will greatly benefit if you have the above packages installed, but it will still work without them.*
+
+Netdata DB engine can be enabled when these are installed (they are optional):
+
+|package|description|
+|:-----:|-----------|
+|`libuv`|multi-platform support library with a focus on asynchronous I/O|
+|`liblz4`|Extremely Fast Compression algorithm|
+|`Judy`|General purpose dynamic array|
+|`openssl`|Cryptography and SSL/TLS Toolkit|
 
 *Netdata will greatly benefit if you have the above packages installed, but it will still work without them.*
 
