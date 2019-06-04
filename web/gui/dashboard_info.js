@@ -461,6 +461,12 @@ netdataDashboard.menu = {
         title: '',
         icon: '<i class="fas fa-th-large"></i>',
         info: 'Xen domain resource utilization metrics. Netdata reads this information using <b>xenstat</b> library which gives access to the resource usage information (CPU, memory, disk I/O, network) for a virtual machine.'
+    },
+
+    'wmi': {
+        title: 'wmi',
+        icon: '<i class="fas fa-server"></i>',
+        info: undefined
     }
 };
 
@@ -1161,6 +1167,10 @@ netdataDashboard.context = {
             '<li><strong>immediate</strong>, the number of times that a request for a table lock could be granted immediately.</li>' +
             '<li><strong>waited</strong>, the number of times that a request for a table lock could not be granted immediately and a wait was needed. If this is high and you have performance problems, you should first optimize your queries, and then either split your table or tables or use replication.</li>' +
             '</ul>'
+    },
+
+    'mysql.innodb_deadlocks': {
+        info: 'A deadlock happens when two or more transactions mutually hold and request for locks, creating a cycle of dependencies. For more information about <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks-handling.html" target="_blank">how to minimize and handle deadlocks</a>.'
     },
 
     // ------------------------------------------------------------------------
