@@ -48,6 +48,7 @@ navpart() {
 }
 
 echo -e 'site_name: Netdata Documentation
+site_url: https://docs.netdata.cloud
 repo_url: https://github.com/netdata/netdata
 repo_name: GitHub
 edit_uri: blob/master
@@ -67,6 +68,9 @@ extra:
       link: "https://www.facebook.com/linuxnetdata/"
 theme:
     name: "material"
+    palette:
+      primary: "blue grey"
+      accent: "light green"
     custom_dir: custom/themes/material
     favicon: custom/img/favicon.ico
     language: '${language}'
@@ -85,7 +89,6 @@ markdown_extensions:
  - footnotes
  - tables
  - admonition
- - codehilite
  - meta
  - sane_lists
  - smarty
@@ -99,6 +102,9 @@ markdown_extensions:
  - pymdownx.caret
  - pymdownx.critic
  - pymdownx.details
+ - pymdownx.highlight:
+    pygments_style: manni
+    noclasses: true
  - pymdownx.inlinehilite
  - pymdownx.magiclink
  - pymdownx.mark
@@ -138,6 +144,7 @@ echo -ne "    - 'docs/Demo-Sites.md'
     - 'packaging/installer/README.md'
     - 'packaging/docker/README.md'
     - 'packaging/installer/UPDATE.md'
+    - 'packaging/DISTRIBUTIONS.md'
     - 'packaging/installer/UNINSTALL.md'
 - 'docs/GettingStarted.md'
 - Running Netdata:
@@ -253,9 +260,10 @@ navpart 2 web/api/badges "" "" 2
 navpart 2 web/api/health "" "" 2
 navpart 2 web/api/queries "" "Queries" 2
 
-echo -ne "- Hacking Netdata:
+echo -ne "- Additional Info:
     - CODE_OF_CONDUCT.md
     - CONTRIBUTORS.md
+    - packaging/maintainers/README.md
 "
 navpart 2 packaging/makeself "" "" 4
 navpart 2 libnetdata "" "libnetdata" 4
