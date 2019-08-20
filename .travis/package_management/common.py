@@ -15,7 +15,8 @@ def fetch_version(orig_build_version):
     # TODO: Checksum validations
     if str(orig_build_version).count(".latest") == 1:
         version_list=str(orig_build_version).replace('v', '').split('.')
-        friendly_version='.'.join(version_list[0:2]) + "." + version_list[3]
+        minor = version_list[3] if int(version_list[2]) == 0 else (version_list[2] + version_list[3])
+        friendly_version='.'.join(version_list[0:2]) + "." + minor
     else:
         friendly_version = orig_build_version.replace('v', '')
         tag = friendly_version # Go to stable tag
@@ -61,42 +62,72 @@ def run_command_in_host(cmd):
     print('Error: '  + e.decode('ascii'))
     print('code: ' + str(proc.returncode))
 
-def install_common_dependendencies(container):
+def prepare_repo(container):
     if str(os.environ["REPO_TOOL"]).count("zypper") == 1:
         run_command(container, [os.environ["REPO_TOOL"], "clean", "-a"])
         run_command(container, [os.environ["REPO_TOOL"], "--no-gpg-checks", "update", "-y"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "json-glib-devel"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "freeipmi-devel"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "cups-devel"])
 
     elif str(os.environ["REPO_TOOL"]).count("yum") == 1:
         run_command(container, [os.environ["REPO_TOOL"], "clean", "all"])
         run_command(container, [os.environ["REPO_TOOL"], "update", "-y"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "json-c-devel"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "freeipmi-devel"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "cups-devel"])
 
         if os.environ["BUILD_STRING"].count("el/7") == 1 and os.environ["BUILD_ARCH"].count("i386") == 1:
             print ("Skipping epel-release install for %s-%s" % (os.environ["BUILD_STRING"], os.environ["BUILD_ARCH"]))
         else:
             run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "epel-release"])
+
     elif str(os.environ["REPO_TOOL"]).count("apt-get") == 1:
         run_command(container, [os.environ["REPO_TOOL"], "update", "-y"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libipmimonitoring-dev"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libjson-c-dev"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libcups2-dev"])
     else:
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "cups-devel"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "freeipmi-devel"])
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "json-c-devel"])
         run_command(container, [os.environ["REPO_TOOL"], "update", "-y"])
-
-    if os.environ["BUILD_STRING"].count("el/6") <= 0:
-        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "autogen"])
 
     run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "sudo"])
     run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "wget"])
     run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "bash"])
+
+def install_common_dependendencies(container):
+    if str(os.environ["REPO_TOOL"]).count("zypper") == 1:
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "gcc-c++"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "json-glib-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "freeipmi-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "cups-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "snappy-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-c"])
+
+    elif str(os.environ["REPO_TOOL"]).count("yum") == 1:
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "gcc-c++"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "json-c-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "freeipmi-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "cups-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "snappy-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-c-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-compiler"])
+
+    elif str(os.environ["REPO_TOOL"]).count("apt-get") == 1:
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "g++"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libipmimonitoring-dev"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libjson-c-dev"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libcups2-dev"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libsnappy-dev"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libprotobuf-dev"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "libprotoc-dev"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-compiler"])
+        if os.environ["BUILD_STRING"].count("debian/jessie") == 1:
+            run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "snappy"])
+    else:
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "gcc-c++"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "cups-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "freeipmi-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "json-c-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "snappy-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-c-devel"])
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "protobuf-compiler"])
+
+    if os.environ["BUILD_STRING"].count("el/6") <= 0:
+        run_command(container, [os.environ["REPO_TOOL"], "install", "-y", "autogen"])
 
 def prepare_version_source(dest_archive, pkg_friendly_version, tag=None):
     print(".0 Preparing local implementation tarball for version %s" % pkg_friendly_version)
@@ -116,7 +147,7 @@ def prepare_version_source(dest_archive, pkg_friendly_version, tag=None):
     run_command_in_host(['autoreconf', '-ivf'])
 
     print(".4 Run configure")
-    run_command_in_host(['./configure', '--with-math', '--with-zlib', '--with-user=netdata'])
+    run_command_in_host(['./configure', '--prefix=/usr', '--sysconfdir=/etc', '--localstatedir=/var', '--libdir=/usr/lib', '--libexecdir=/usr/libexec', '--with-math', '--with-zlib', '--with-user=netdata'])
 
     print(".5 Run make dist")
     run_command_in_host(['make', 'dist'])

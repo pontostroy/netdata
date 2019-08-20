@@ -83,6 +83,12 @@ AC_ARG_ENABLE(
     [enable_backend_prometheus_remote_write="detect"]
 )
 AC_ARG_ENABLE(
+    [backend-mongodb],
+    [AS_HELP_STRING([--enable-backend-mongodb], [enable mongodb backend @<:@default autodetect@:>@])],
+    ,
+    [enable_backend_mongodb="detect"]
+)
+AC_ARG_ENABLE(
     [pedantic],
     [AS_HELP_STRING([--enable-pedantic], [enable pedantic compiler warnings @<:@default disabled@:>@])],
     ,
@@ -283,7 +289,7 @@ OPTIONAL_UV_LIBS="${UV_LIBS}"
 
 AC_CHECK_LIB(
     [lz4],
-    [LZ4_decompress_safe],
+    [LZ4_compress_default],
     [LZ4_LIBS="-llz4"]
 )
 
@@ -378,8 +384,11 @@ test "${enable_dbengine}" = "yes" -a -z "${LZ4_LIBS}" && \
 test "${enable_dbengine}" = "yes" -a -z "${JUDY_LIBS}" && \
     AC_MSG_ERROR([libJudy required but not found. Try installing 'libjudy-dev' or 'Judy-devel'.])
 
-test "${enable_dbengine}" = "yes" -o "${enable_https}" = "yes" -a -z "${SSL_LIBS}" && \
-    AC_MSG_ERROR([OpenSSL required but not found. Try installing 'libssl-dev' or 'openssl-devel'.])
+test "${enable_https}" = "yes" -a -z "${SSL_LIBS}" && \
+    AC_MSG_ERROR([OpenSSL required for HTTPS but not found. Try installing 'libssl-dev' or 'openssl-devel'.])
+
+test "${enable_dbengine}" = "yes" -a -z "${SSL_LIBS}" && \
+    AC_MSG_ERROR([OpenSSL required for DBENGINE but not found. Try installing 'libssl-dev' or 'openssl-devel'.])
 
 AC_MSG_CHECKING([if netdata dbengine should be used])
 if test "${enable_dbengine}" != "no" -a "${UV_LIBS}" -a "${LZ4_LIBS}" -a "${JUDY_LIBS}" -a "${SSL_LIBS}"; then
@@ -435,6 +444,14 @@ if test "${GCC}" = "yes"; then
 else
     AC_DEFINE_UNQUOTED([likely(x)], [(x)], [gcc branch optimization])
     AC_DEFINE_UNQUOTED([unlikely(x)], [(x)], [gcc branch optimization])
+fi
+
+if test "${GCC}" = "yes"; then
+    AC_DEFINE([__always_unused], [__attribute__((unused))], [gcc unused attribute])
+    AC_DEFINE([__maybe_unused], [__attribute__((unused))], [gcc unused attribute])
+else
+    AC_DEFINE([__always_unused], [], [dummy unused attribute])
+    AC_DEFINE([__maybe_unused], [], [dummy unused attribute])
 fi
 
 if test "${enable_pedantic}" = "yes"; then
@@ -816,17 +833,17 @@ if test "${have_libaws_cpp_sdk_core}" = "yes" -a "${have_libcrypto}" = "yes" -a 
     CXXFLAGS="${CXXFLAGS} -std=c++11"
 
     AC_TRY_LINK(
-    [
-    #include <aws/core/Aws.h>
-    #include <aws/core/client/ClientConfiguration.h>
-    #include <aws/core/auth/AWSCredentials.h>
-    #include <aws/core/utils/Outcome.h>
-    #include <aws/kinesis/KinesisClient.h>
-    #include <aws/kinesis/model/PutRecordRequest.h>
-    ],
-    [Aws::Kinesis::Model::PutRecordRequest request;],
-    [have_libaws_cpp_sdk_kinesis=yes],
-    [have_libaws_cpp_sdk_kinesis=no]
+        [
+            #include <aws/core/Aws.h>
+            #include <aws/core/client/ClientConfiguration.h>
+            #include <aws/core/auth/AWSCredentials.h>
+            #include <aws/core/utils/Outcome.h>
+            #include <aws/kinesis/KinesisClient.h>
+            #include <aws/kinesis/model/PutRecordRequest.h>
+        ],
+        [Aws::Kinesis::Model::PutRecordRequest request;],
+        [have_libaws_cpp_sdk_kinesis=yes],
+        [have_libaws_cpp_sdk_kinesis=no]
     )
 
     LIBS="${save_LIBS}"
@@ -874,17 +891,45 @@ AM_CONDITIONAL([ENABLE_BACKEND_KINESIS], [test "${enable_backend_kinesis}" = "ye
 
 PKG_CHECK_MODULES(
     [PROTOBUF],
-    [protobuf],
+    [protobuf >= 3],
     [have_libprotobuf=yes],
     [have_libprotobuf=no]
 )
 
-PKG_CHECK_MODULES(
-    [SNAPPY],
-    [snappy],
-    [have_libsnappy=yes],
-    [have_libsnappy=no]
-)
+AC_MSG_CHECKING([for snappy::RawCompress in -lsnappy])
+
+    AC_LANG_SAVE
+    AC_LANG_CPLUSPLUS
+    save_LIBS="${LIBS}"
+    LIBS="-lsnappy"
+    save_CXXFLAGS="${CXXFLAGS}"
+    CXXFLAGS="${CXXFLAGS} -std=c++11"
+
+    AC_TRY_LINK(
+        [
+            #include <stdlib.h>
+            #include <snappy.h>
+        ],
+        [
+            const char *input = "test";
+            size_t compressed_length;
+            char *buffer = (char *)malloc(5 * sizeof(char));
+            snappy::RawCompress(input, 4, buffer, &compressed_length);
+            free(buffer);
+        ],
+        [
+            have_libsnappy=yes
+            SNAPPY_CFLAGS=""
+            SNAPPY_LIBS="-lsnappy"
+        ],
+        [have_libsnappy=no]
+    )
+
+    LIBS="${save_LIBS}"
+    CXXFLAGS="${save_CXXFLAGS}"
+    AC_LANG_RESTORE
+
+AC_MSG_RESULT([${have_libsnappy}])
 
 AC_PATH_PROG([PROTOC], [protoc], [no])
 AS_IF(
@@ -919,13 +964,40 @@ if test "${enable_backend_prometeus_remote_write}" != "no" -a "${have_libprotobu
     AC_DEFINE([ENABLE_PROMETHEUS_REMOTE_WRITE], [1], [Prometheus remote write API usability])
     OPTIONAL_PROMETHEUS_REMOTE_WRITE_CFLAGS="${PROTOBUF_CFLAGS} ${SNAPPY_CFLAGS}"
     CXX11FLAG="-std=c++11"
-    OPTIONAL_PROMETHEUS_REMOTE_WRITE_LIBS="${PROTOBUF_LIBS} ${SNAPPY_LIBS} "
+    OPTIONAL_PROMETHEUS_REMOTE_WRITE_LIBS="${PROTOBUF_LIBS} ${SNAPPY_LIBS}"
 else
     enable_backend_prometheus_remote_write="no"
 fi
 
 AC_MSG_RESULT([${enable_backend_prometheus_remote_write}])
 AM_CONDITIONAL([ENABLE_BACKEND_PROMETHEUS_REMOTE_WRITE], [test "${enable_backend_prometheus_remote_write}" = "yes"])
+
+
+# -----------------------------------------------------------------------------
+# MongoDB backend - libmongoc
+
+PKG_CHECK_MODULES(
+    [LIBMONGOC],
+    [libmongoc-1.0 >= 1.7],
+    [have_libmongoc=yes],
+    [have_libmongoc=no]
+)
+
+test "${enable_backend_mongodb}" = "yes" -a "${have_libmongoc}" != "yes" && \
+    AC_MSG_ERROR([libmongoc required but not found. Try installing `mongoc`.])
+
+AC_MSG_CHECKING([if mongodb backend should be enabled])
+if test "${enable_backend_mongodb}" != "no" -a "${have_libmongoc}" = "yes"; then
+    enable_backend_mongodb="yes"
+    AC_DEFINE([HAVE_MONGOC], [1], [libmongoc usability])
+    OPTIONAL_MONGOC_CFLAGS="${LIBMONGOC_CFLAGS}"
+    OPTIONAL_MONGOC_LIBS="${LIBMONGOC_LIBS}"
+else
+    enable_backend_mongodb="no"
+fi
+
+AC_MSG_RESULT([${enable_backend_mongodb}])
+AM_CONDITIONAL([ENABLE_BACKEND_MONGODB], [test "${enable_backend_mongodb}" = "yes"])
 
 
 # -----------------------------------------------------------------------------
@@ -952,7 +1024,7 @@ if test "${enable_lto}" != "no"; then
 fi
 if test "${have_lto}" = "yes"; then
     oCFLAGS="${CFLAGS}"
-    CFLAGS="${CFLAGS} -flto ${OPTIONAL_MATH_CFLAGS} ${OPTIONAL_NFACCT_CFLAGS} ${OPTIONAL_ZLIB_CFLAGS} ${OPTIONAL_UUID_CFLAGS} ${OPTIONAL_LIBCAP_CFLAGS} ${OPTIONAL_IPMIMONITORING_CFLAGS} ${OPTIONAL_CUPS_CFLAGS} ${OPTIONAL_XENSTAT_FLAGS} ${OPTIONAL_KINESIS_CFLAGS} ${OPTIONAL_PROMETHEUS_REMOTE_WRITE_CFLAGS}"
+    CFLAGS="${CFLAGS} -flto"
     ac_cv_c_lto_cross_compile="${enable_lto}"
     test "${ac_cv_c_lto_cross_compile}" != "yes" && ac_cv_c_lto_cross_compile="no"
     AC_C_LTO
@@ -1001,6 +1073,10 @@ AC_SUBST([logdir])
 AC_SUBST([pluginsdir])
 AC_SUBST([webdir])
 
+CFLAGS="${CFLAGS} ${OPTIONAL_MATH_CFLAGS} ${OPTIONAL_NFACCT_CFLAGS} ${OPTIONAL_ZLIB_CFLAGS} ${OPTIONAL_UUID_CFLAGS} \
+    ${OPTIONAL_LIBCAP_CFLAGS} ${OPTIONAL_IPMIMONITORING_CFLAGS} ${OPTIONAL_CUPS_CFLAGS} ${OPTIONAL_XENSTAT_FLAGS} \
+    ${OPTIONAL_KINESIS_CFLAGS} ${OPTIONAL_PROMETHEUS_REMOTE_WRITE_CFLAGS} ${OPTIONAL_MONGOC_CFLAGS}"
+
 CXXFLAGS="${CFLAGS} ${CXX11FLAG}"
 
 CPPFLAGS="\
@@ -1040,6 +1116,8 @@ AC_SUBST([OPTIONAL_KINESIS_CFLAGS])
 AC_SUBST([OPTIONAL_KINESIS_LIBS])
 AC_SUBST([OPTIONAL_PROMETHEUS_REMOTE_WRITE_CFLAGS])
 AC_SUBST([OPTIONAL_PROMETHEUS_REMOTE_WRITE_LIBS])
+AC_SUBST([OPTIONAL_MONGOC_CFLAGS])
+AC_SUBST([OPTIONAL_MONGOC_LIBS])
 
 
 AC_CONFIG_FILES([
@@ -1052,6 +1130,7 @@ AC_CONFIG_FILES([
     backends/prometheus/Makefile
     backends/prometheus/remote_write/Makefile
     backends/aws_kinesis/Makefile
+    backends/mongodb/Makefile
     collectors/Makefile
     collectors/apps.plugin/Makefile
     collectors/cgroups.plugin/Makefile
