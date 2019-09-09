@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 %global contentdir %{_datadir}/netdata
 
+
+#TODO: Temporary fix for the build-id error during go.d plugin set up
+%global _missing_build_ids_terminate_build 0
+
 # This is temporary and should eventually be resolved. This bypasses
 # the default rhel __os_install_post which throws a python compile
 # error.
@@ -383,7 +387,7 @@ install_go() {
 	return 0
 }
 install_go
-install -m 0750 -p go.d.plugin "${RPM_BUILD_ROOT}%{_libexecdir}/%{name}/plugins.d/go.d.plugin"
+install -m 0640 -p go.d.plugin "${RPM_BUILD_ROOT}%{_libexecdir}/%{name}/plugins.d/go.d.plugin"
 
 %pre
 
