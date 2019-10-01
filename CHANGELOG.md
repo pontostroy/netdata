@@ -6,6 +6,11 @@
 
 **Merged pull requests:**
 
+- web api: include family into allmetrics json response [\#6966](https://github.com/netdata/netdata/pull/6966) ([ilyam8](https://github.com/ilyam8))
+- Reduce overhead during write io [\#6964](https://github.com/netdata/netdata/pull/6964) ([mfundul](https://github.com/mfundul))
+- netdata/packaging: Make spec file more consistent with version dependencies, plus some documentation nits [\#6948](https://github.com/netdata/netdata/pull/6948) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- Fix a memory leak [\#6945](https://github.com/netdata/netdata/pull/6945) ([vlvkobal](https://github.com/vlvkobal))
+- Fix Remark Lint for READMEs in Database [\#6942](https://github.com/netdata/netdata/pull/6942) ([prhomhyse](https://github.com/prhomhyse))
 - Restore original alignment behaviour of RRDR [\#6938](https://github.com/netdata/netdata/pull/6938) ([mfundul](https://github.com/mfundul))
 - minor - check for curl to not get wrong error message [\#6931](https://github.com/netdata/netdata/pull/6931) ([underhood](https://github.com/underhood))
 - netdata/packaging: fix broken links on web files, for deb [\#6930](https://github.com/netdata/netdata/pull/6930) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
@@ -20,6 +25,7 @@
 - Detect deadlock in dbengine page cache [\#6911](https://github.com/netdata/netdata/pull/6911) ([mfundul](https://github.com/mfundul))
 - Correct read length of silencers file [\#6909](https://github.com/netdata/netdata/pull/6909) ([cakrit](https://github.com/cakrit))
 - netdata/ci: fix branch check [\#6905](https://github.com/netdata/netdata/pull/6905) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
+- \#3925 implementation [\#6903](https://github.com/netdata/netdata/pull/6903) ([underhood](https://github.com/underhood))
 - netdata/packaging: remove rhel7 - i386, until its settled from bug \#6849 [\#6902](https://github.com/netdata/netdata/pull/6902) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
 - Improve changelog generation and add it back to the pipeline [\#6900](https://github.com/netdata/netdata/pull/6900) ([cakrit](https://github.com/cakrit))
 - \[collector/slabinfo\] Fix pagesize not defined in non-x86 arches [\#6897](https://github.com/netdata/netdata/pull/6897) ([Saruspete](https://github.com/Saruspete))
@@ -53,6 +59,7 @@
 - Fix some errors reported by Coverity [\#6797](https://github.com/netdata/netdata/pull/6797) ([thiagoftsm](https://github.com/thiagoftsm))
 - Allow hostnames in Access Control Lists [\#6796](https://github.com/netdata/netdata/pull/6796) ([amoss](https://github.com/amoss))
 - update grep to be more specific [\#6794](https://github.com/netdata/netdata/pull/6794) ([n0coast](https://github.com/n0coast))
+- Common pattern for web and alarms together with two bug fixes [\#6783](https://github.com/netdata/netdata/pull/6783) ([thiagoftsm](https://github.com/thiagoftsm))
 - Changes to launching the python.d plugin aggregator. [\#6781](https://github.com/netdata/netdata/pull/6781) ([amoss](https://github.com/amoss))
 - vcsa collector: charts descritpion and alarms [\#6772](https://github.com/netdata/netdata/pull/6772) ([ilyam8](https://github.com/ilyam8))
 - netdata/packaging: Introduce separate CUPS package for debian distributions [\#6724](https://github.com/netdata/netdata/pull/6724) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
@@ -62,6 +69,7 @@
 - changed naming for redirect\_uri param [\#6663](https://github.com/netdata/netdata/pull/6663) ([jacekkolasa](https://github.com/jacekkolasa))
 - Fixes netdata group deletion on linux for uninstall script [\#6645](https://github.com/netdata/netdata/pull/6645) ([mbarper](https://github.com/mbarper))
 - Gearman plugin for Netdata [\#6567](https://github.com/netdata/netdata/pull/6567) ([agronick](https://github.com/agronick))
+- Create a template for all dimensions [\#6560](https://github.com/netdata/netdata/pull/6560) ([thiagoftsm](https://github.com/thiagoftsm))
 - Center the chart on timeframe when an alarm is raised [\#6391](https://github.com/netdata/netdata/pull/6391) ([thiagoftsm](https://github.com/thiagoftsm))
 - Cppcheck fixes [\#6386](https://github.com/netdata/netdata/pull/6386) ([ac000](https://github.com/ac000))
 
@@ -226,7 +234,6 @@
 - Daemon fix double kills of collection threads on shutdown [\#6387](https://github.com/netdata/netdata/pull/6387) ([emmrk](https://github.com/emmrk))
 - Add apps grouping debug messages [\#6375](https://github.com/netdata/netdata/pull/6375) ([vlvkobal](https://github.com/vlvkobal))
 - Reimplemented mypopen\(\) function family [\#6339](https://github.com/netdata/netdata/pull/6339) ([mfundul](https://github.com/mfundul))
-- ZRAM info collector module \(proc.plugin\) [\#6276](https://github.com/netdata/netdata/pull/6276) ([RaZeR-RBI](https://github.com/RaZeR-RBI))
 
 ## [v1.16.0](https://github.com/netdata/netdata/tree/v1.16.0) (2019-07-08)
 
@@ -268,16 +275,6 @@
 - Chart name streaming [\#6304](https://github.com/netdata/netdata/pull/6304) ([vlvkobal](https://github.com/vlvkobal))
 - Handle file descriptors running out [\#6303](https://github.com/netdata/netdata/pull/6303) ([mfundul](https://github.com/mfundul))
 - Add note regarding libexecdir [\#6301](https://github.com/netdata/netdata/pull/6301) ([cakrit](https://github.com/cakrit))
-- stale bot limits update [\#6297](https://github.com/netdata/netdata/pull/6297) ([ilyam8](https://github.com/ilyam8))
-- \[freeipmi\] Remove id in sensor name when already unique [\#6296](https://github.com/netdata/netdata/pull/6296) ([Saruspete](https://github.com/Saruspete))
-- Agent Frontend footer hidden [\#6294](https://github.com/netdata/netdata/pull/6294) ([thiagoftsm](https://github.com/thiagoftsm))
-- doc: remove single/multi-threaded web server configuration [\#6291](https://github.com/netdata/netdata/pull/6291) ([nodiscc](https://github.com/nodiscc))
-- Add a riak plugin [\#6286](https://github.com/netdata/netdata/pull/6286) ([jchristgit](https://github.com/jchristgit))
-- netdata/packaging: Separate beta messages from production messages [\#6282](https://github.com/netdata/netdata/pull/6282) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
-- Add more info on the stream.conf health enabled by default = auto option [\#6281](https://github.com/netdata/netdata/pull/6281) ([cakrit](https://github.com/cakrit))
-- Add comments about AWS SDK for C++ installation [\#6277](https://github.com/netdata/netdata/pull/6277) ([vlvkobal](https://github.com/vlvkobal))
-- Fix devuan support for initd [\#6275](https://github.com/netdata/netdata/pull/6275) ([paulkatsoulakis](https://github.com/paulkatsoulakis))
-- Easily disable alarms, by persisting the silencers configuration [\#6274](https://github.com/netdata/netdata/pull/6274) ([thiagoftsm](https://github.com/thiagoftsm))
 
 ## [v1.15.0](https://github.com/netdata/netdata/tree/v1.15.0) (2019-05-22)
 
