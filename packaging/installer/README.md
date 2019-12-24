@@ -65,6 +65,7 @@ The `kickstart.sh` script passes all its parameters to `netdata-installer.sh`, s
 -   `--dont-wait`: Enable automated installs by not prompting for permission to install any required packages.
 -   `--dont-start-it`: Prevent the installer from starting Netdata automatically.
 -   `--stable-channel`: Automatically update only on the release of new major versions.
+-   `--nightly-channel`: Automatically update on every new nightly build.
 -   `--no-updates`: Prevent automatic updates of any kind.
 -   `--local-files`: Used for offline installations. Pass four file paths: the Netdata tarball, the checksum file, the go.d plugin tarball, and the go.d plugin config tarball, to force kickstart run the process using those files.
 
@@ -76,7 +77,9 @@ bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait --dont-start-it 
 Note: `--stable-channel` and `--local-files` overlap, if you use the tarball override the stable channel option is not effective
 </details>
 
-Once Netdata is installed, see [Getting Started](../../docs/getting-started.md).
+Now that Netdata is installed, be sure to visit our [getting started guide](../../docs/getting-started.md) for a quick
+overview of configuring Netdata, enabling plugins, and controlling Netdata's daemon. Or, get the full guided tour of
+Netdata's capabilities with our [step-by-step tutorial](../../docs/step-by-step/step-00.md)!
 
 ---
 
@@ -106,7 +109,7 @@ This script installs Netdata at `/opt/netdata`.
 Verify the integrity of the script with this:
 
 ```bash
-[ "8ad43ff960bf6f2487233682909f7a87" = "$(curl -Ss https://my-netdata.io/kickstart-static64.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
+[ "23e0f38dfb9d517be16393c3ed1f88bd" = "$(curl -Ss https://my-netdata.io/kickstart-static64.sh | md5sum | cut -d ' ' -f 1)" ] && echo "OK, VALID" || echo "FAILED, INVALID"
 ```
 
 *It should print `OK, VALID` if the script is the one we ship.*
@@ -145,7 +148,9 @@ sh /tmp/kickstart-static64.sh
 
 </details>
 
-Once Netdata is installed, see [Getting Started](../../docs/getting-started.md).
+Now that Netdata is installed, be sure to visit our [getting started guide](../../docs/getting-started.md) for a quick
+overview of configuring Netdata, enabling plugins, and controlling Netdata's daemon. Or, get the full guided tour of
+Netdata's capabilities with our [step-by-step tutorial](../../docs/step-by-step/step-00.md)!
 
 ---
 
@@ -231,6 +236,7 @@ Once Netdata is compiled, to run it the following packages are required (already
 |:-----:|-----------|
 | `libuuid` | part of `util-linux` for GUIDs management|
 | `zlib`    | gzip compression for the internal Netdata web server|
+| `libuv`   | Multi-platform support library with a focus on asynchronous I/O, version 1 or greater|
 
 *Netdata will fail to start without the above.*
 
@@ -260,7 +266,6 @@ Netdata DB engine can be enabled when these are installed (they are optional):
 
 | package  | description|
 |:-----:|-----------|
-| `libuv`  | Multi-platform support library with a focus on asynchronous I/O, version 1 or greater|
 | `liblz4` | Extremely fast compression algorithm, version r129 or greater|
 | `Judy`   | General purpose dynamic array|
 | `openssl`| Cryptography and SSL/TLS toolkit|
@@ -582,8 +587,10 @@ bash kickstart.sh --local-files /tmp/netdata-version-number-here.tar.gz /tmp/sha
 bash kickstart-static64.sh --local-files /tmp/netdata-version-number-here.gz.run /tmp/sha256sums.txt
 ```
 
-Now that you're finished with your offline installation, you can move on to our
-[getting started guide](../../docs/getting-started.md)!
+Now that you're finished with your offline installation, you can move on to our [getting started
+guide](../../docs/getting-started.md) for a quick overview of configuring Netdata, enabling plugins, and controlling
+Netdata's daemon. Or, get the full guided tour of Netdata's capabilities with our [step-by-step
+tutorial](../../docs/step-by-step/step-00.md)!
 
 ## Automatic updates
 
