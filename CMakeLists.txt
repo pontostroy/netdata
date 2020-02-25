@@ -298,6 +298,8 @@ set(LIBNETDATA_FILES
         libnetdata/clocks/clocks.h
         libnetdata/dictionary/dictionary.c
         libnetdata/dictionary/dictionary.h
+        libnetdata/ebpf/ebpf.c
+        libnetdata/ebpf/ebpf.h
         libnetdata/eval/eval.c
         libnetdata/eval/eval.h
         libnetdata/inlined.h
@@ -339,8 +341,7 @@ set(LIBNETDATA_FILES
 add_library(libnetdata OBJECT ${LIBNETDATA_FILES})
 
 set(APPS_PLUGIN_FILES
-        collectors/apps.plugin/apps_plugin.c
-        )
+        collectors/apps.plugin/apps_plugin.c)
 
 set(CHECKS_PLUGIN_FILES
         collectors/checks.plugin/plugin_checks.c
@@ -404,6 +405,10 @@ set(PERF_PLUGIN_FILES
 
 set(SLABINFO_PLUGIN_FILES
         collectors/slabinfo.plugin/slabinfo.c
+        )
+
+set(EBPF_PROCESS_PLUGIN_FILES
+        collectors/ebpf_process.plugin/ebpf_process.c
         )
 
 set(PROC_PLUGIN_FILES
@@ -606,6 +611,14 @@ set(CLAIM_PLUGIN_FILES
         claim/claim.h
         )
 
+set(ACLK_PLUGIN_FILES
+        aclk/agent_cloud_link.c
+        aclk/agent_cloud_link.h
+        aclk/agent_cloud_link.c
+        aclk/mqtt.c
+        aclk/mqtt.h
+        )
+
 set(EXPORTING_ENGINE_FILES
         exporting/exporting_engine.c
         exporting/exporting_engine.h
@@ -673,6 +686,7 @@ set(NETDATA_FILES
         ${STREAMING_PLUGIN_FILES}
         ${WEB_PLUGIN_FILES}
         ${CLAIM_PLUGIN_FILES}
+        ${ACLK_PLUGIN_FILES}
         )
 
 set(NETDATACLI_FILES
@@ -770,6 +784,7 @@ IF(LINUX)
     SET(ENABLE_PLUGIN_APPS True)
     SET(ENABLE_PLUGIN_PERF True)
     SET(ENABLE_PLUGIN_SLABINFO True)
+    SET(ENABLE_PLUGIN_EBPF True)
 
 ELSEIF(FREEBSD)
     add_executable(netdata config.h ${NETDATA_FILES} ${FREEBSD_PLUGIN_FILES})
@@ -780,6 +795,7 @@ ELSEIF(FREEBSD)
     SET(ENABLE_PLUGIN_APPS True)
     SET(ENABLE_PLUGIN_PERF False)
     SET(ENABLE_PLUGIN_SLABINFO False)
+    SET(ENABLE_PLUGIN_EBPF False)
 
 ELSEIF(MACOS)
     add_executable(netdata config.h ${NETDATA_FILES} ${MACOS_PLUGIN_FILES})
@@ -790,6 +806,7 @@ ELSEIF(MACOS)
     SET(ENABLE_PLUGIN_APPS False)
     SET(ENABLE_PLUGIN_PERF False)
     SET(ENABLE_PLUGIN_SLABINFO False)
+    SET(ENABLE_PLUGIN_EBPF False)
 
 ENDIF()
 
@@ -897,6 +914,20 @@ ENDIF()
 
 
 # -----------------------------------------------------------------------------
+# ebpf_process.plugin
+
+IF(ENABLE_PLUGIN_EBPF)
+    message(STATUS "ebpf_process.plugin: enabled")
+    add_executable(ebpf_process.plugin config.h ${EBPF_PROCESS_PLUGIN_FILES})
+    target_link_libraries (ebpf_process.plugin libnetdata ${NETDATA_COMMON_LIBRARIES})
+    target_include_directories(ebpf_process.plugin PUBLIC ${NETDATA_COMMON_INCLUDE_DIRS})
+    target_compile_options(ebpf_process.plugin PUBLIC ${NETDATA_COMMON_CFLAGS})
+ELSE()
+    message(STATUS "ebpf_process.plugin: disabled")
+ENDIF()
+
+
+# -----------------------------------------------------------------------------
 # slabinfo.plugin
 
 IF(ENABLE_PLUGIN_SLABINFO)
@@ -969,6 +1000,7 @@ if(BUILD_TESTING)
         -Wl,--wrap=notify_workers
         -Wl,--wrap=send_internal_metrics
         -Wl,--wrap=now_realtime_sec
+        -Wl,--wrap=uv_thread_set_name_np
         -Wl,--wrap=uv_thread_create
         -Wl,--wrap=uv_mutex_lock
         -Wl,--wrap=uv_mutex_unlock
